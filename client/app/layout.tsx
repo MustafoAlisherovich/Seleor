@@ -32,7 +32,7 @@ export default function RootLayout({ children }: ChildProps) {
 					speed={200}
 					shadow='0 0 10px #007aff,0 0 5px #007aff'
 				/>
-				<main className=''>{children}</main>
+				<main>{children}</main>
 				<Toaster />
 			</body>
 		</html>

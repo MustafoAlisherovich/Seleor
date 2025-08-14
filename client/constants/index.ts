@@ -1,4 +1,11 @@
-import { Banknote, Heart, Settings2, Shuffle, User } from 'lucide-react'
+import {
+	Banknote,
+	Barcode,
+	Heart,
+	Settings2,
+	Shuffle,
+	User,
+} from 'lucide-react'
 
 export const products = [
 	{
@@ -58,4 +65,11 @@ export const navLinks = [
 	{ name: 'Services', route: '/services' },
 	{ name: 'Products', route: '/products' },
 	{ name: 'Contact', route: '/contact' },
+]
+
+export const adminSidebar = [
+	{ name: 'Customers', route: '/admin', icon: User },
+	{ name: 'Products', route: '/admin/products', icon: Barcode },
+	{ name: 'Orders', route: '/admin/orders', icon: Shuffle },
+	{ name: 'Payments', route: '/admin/payments', icon: Banknote },
 ]
