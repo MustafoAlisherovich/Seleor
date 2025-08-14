@@ -4,7 +4,7 @@ import Link from 'next/link'
 function Logo() {
 	return (
 		<Link href={'/'}>
-			<div className='flex items-center gap-1'>
+			<div className='flex items-center justify-between h-full'>
 				<Image src={'/logo.svg'} alt='logo' width={150} height={50} />
 			</div>
 		</Link>

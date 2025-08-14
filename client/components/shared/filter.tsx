@@ -1,12 +1,8 @@
 'use client'
 
 import { categories } from '@/constants'
-import { formUrlQuery, removeUrlQuery } from '@/lib/utils'
-import { debounce } from 'lodash'
-import { Search } from 'lucide-react'
+import { cn, formUrlQuery } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useCallback } from 'react'
-import { Input } from '../ui/input'
 import {
 	Select,
 	SelectContent,
@@ -15,9 +11,13 @@ import {
 	SelectValue,
 } from '../ui/select'
 
-function Filter() {
-	const searchParams = useSearchParams()
+interface Props {
+	showCategory?: boolean
+}
+
+function Filter({ showCategory = false }: Props) {
 	const router = useRouter()
+	const searchParams = useSearchParams()
 
 	const onFilterChange = (value: string) => {
 		const newUrl = formUrlQuery({
@@ -37,66 +37,34 @@ function Filter() {
 		router.push(newUrl)
 	}
 
-	const onInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value
-		const newUrl = formUrlQuery({
-			key: 'q',
-			params: searchParams.toString(),
-			value,
-		})
-
-		router.push(newUrl)
-
-		if (value == '') {
-			const newUrl = removeUrlQuery({
-				key: 'q',
-				params: searchParams.toString(),
-			})
-			router.push(newUrl)
-		}
-	}
-
-	const handleSearchDebounce = useCallback(debounce(onInputSearch, 300), [])
-
 	return (
-		<div className='gap-1 max-md:w-full grid grid-cols-3'>
-			<div className='flex items-center bg-secondary max-md:w-1/2 border'>
-				<Input
-					placeholder='Qidirish'
-					className='text-xs border-none no-focus'
-					onChange={handleSearchDebounce}
-				/>
-				<Search className='mr-2 cursor-pointer text-muted-foreground' />
-			</div>
-
+		<div
+			className={cn('grid grid-cols-1 gap-2', showCategory && 'grid-cols-2')}
+		>
 			<Select onValueChange={onFilterChange}>
-				<SelectTrigger className='bg-secondary text-xs max-md:w-1/2'>
-					<SelectValue
-						placeholder='Select filter'
-						className='text-muted-foreground'
-					/>
+				<SelectTrigger className='w-[180px]'>
+					<SelectValue placeholder='Select filter' />
 				</SelectTrigger>
 				<SelectContent>
-					<SelectItem value='newest'>Newest</SelectItem>
 					<SelectItem value='oldest'>Oldest</SelectItem>
+					<SelectItem value='newest'>Newest</SelectItem>
 				</SelectContent>
 			</Select>
 
-			<Select onValueChange={onCategoryChange}>
-				<SelectTrigger className='bg-secondary text-xs max-md:w-1/2'>
-					<SelectValue
-						placeholder='Select category'
-						className='text-muted-foreground'
-					/>
-				</SelectTrigger>
-				<SelectContent>
-					{categories.map(category => (
-						<SelectItem value={category} key={category}>
-							{category}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+			{showCategory && (
+				<Select onValueChange={onCategoryChange}>
+					<SelectTrigger className='w-[180px]'>
+						<SelectValue placeholder='Select category' />
+					</SelectTrigger>
+					<SelectContent>
+						{categories.map(category => (
+							<SelectItem key={category} value={category}>
+								{category}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
 		</div>
 	)
 }

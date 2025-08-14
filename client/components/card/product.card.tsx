@@ -27,8 +27,8 @@ function ProductCard({ product }: Props) {
 					className='mx-auto'
 					alt={product.title!}
 				/>
-				<div className='absolute right-0 top-0 z-50 opacity-0 group-hover:opacity-100 transition-all'>
-					<Button size={'icon'}>
+				<div className='absolute right-0 top-0 z-10 opacity-0 group-hover:opacity-100 transition-all'>
+					<Button size={'icon'} className='cursor-pointer'>
 						<Heart />
 					</Button>
 				</div>
