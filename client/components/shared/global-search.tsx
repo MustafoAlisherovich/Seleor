@@ -1,3 +1,5 @@
+'use client'
+
 import { formUrlQuery, removeUrlQuery } from '@/lib/utils'
 import { debounce } from 'lodash'
 import { Search as SearchIcon } from 'lucide-react'

@@ -1,14 +1,17 @@
-'use client'
-
+import { authOptions } from '@/lib/auth-options'
 import { Heart, ShoppingCart, User } from 'lucide-react'
+import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import GlobalSearch from './global-search'
 import Logo from './logo'
+import UserBox from './user-box'
 
-function Navbar() {
+async function Navbar() {
+	const session = await getServerSession(authOptions)
+
 	return (
-		<nav className='fixed w-full z-50 bg-secondary'>
+		<nav className='fixed w-full z-50 bg-secondary top-0 '>
 			<div className='container max-w-7xl mx-auto px-4'>
 				<div className='flex items-center justify-between h-16'>
 					{/* Chap taraf - Logo */}
@@ -31,16 +34,6 @@ function Navbar() {
 							</Button>
 						</Link>
 
-						<Link href='/sign-in'>
-							<Button
-								variant='ghost'
-								className='flex items-center gap-2 px-3 py-2 cursor-pointer'
-							>
-								<User className='size-5' />
-								<span className='hidden sm:inline'>Login</span>
-							</Button>
-						</Link>
-
 						<Button
 							variant='ghost'
 							className='flex items-center gap-2 px-3 py-2 cursor-pointer'
@@ -48,6 +41,22 @@ function Navbar() {
 							<ShoppingCart className='size-5' />
 							<span className='hidden sm:inline'>Cart</span>
 						</Button>
+
+						{!session?.currentUser?._id && (
+							<Link href='/sign-in'>
+								<Button
+									variant='ghost'
+									className='flex items-center gap-2 px-3 py-2 cursor-pointer'
+								>
+									<User className='size-5' />
+									<span className='hidden sm:inline'>Login</span>
+								</Button>
+							</Link>
+						)}
+
+						{session?.currentUser?._id && (
+							<UserBox user={session.currentUser} />
+						)}
 					</div>
 				</div>
 			</div>

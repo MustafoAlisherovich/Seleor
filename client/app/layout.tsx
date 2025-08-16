@@ -1,3 +1,4 @@
+import SessionProvider from '@/components/providers/session.provider'
 import Navbar from '@/components/shared/navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { ChildProps } from '@/types'
@@ -18,23 +19,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: ChildProps) {
 	return (
-		<html lang='en'>
-			<body className={`${montserrat.className} antialiased`}>
-				<Navbar />
-				<NextTopLoader
-					color='#007aff'
-					initialPosition={0.5}
-					crawlSpeed={200}
-					height={3}
-					crawl={true}
-					showSpinner={false}
-					easing='ease'
-					speed={200}
-					shadow='0 0 10px #007aff,0 0 5px #007aff'
-				/>
-				<main>{children}</main>
-				<Toaster />
-			</body>
-		</html>
+		<SessionProvider>
+			<html lang='en'>
+				<body className={`${montserrat.className} antialiased`}>
+					<Navbar />
+					<NextTopLoader
+						color='#007aff'
+						initialPosition={0.5}
+						crawlSpeed={200}
+						height={3}
+						crawl={true}
+						showSpinner={false}
+						easing='ease'
+						speed={200}
+						shadow='0 0 10px #007aff,0 0 5px #007aff'
+					/>
+					<main>{children}</main>
+					<Toaster />
+				</body>
+			</html>
+		</SessionProvider>
 	)
 }

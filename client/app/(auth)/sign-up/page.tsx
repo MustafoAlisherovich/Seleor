@@ -29,12 +29,12 @@ function Page() {
 	}
 
 	return (
-		<Card className='w-1/2 p-4'>
+		<Card className='w-[40vw] p-4 mx-auto shadow-lg'>
 			<h1 className='text-xl font-bold'>Sign Up</h1>
 			<p className='text-sm text-muted-foreground'>
 				Welcome to our platform! Please sign up to create an
 			</p>
-			<Separator className='my-3' />
+			<Separator />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
 					<FormField
@@ -44,7 +44,7 @@ function Page() {
 							<FormItem className='space-y-0'>
 								<Label>Full Name</Label>
 								<FormControl>
-									<Input placeholder='Osman Ali' {...field} />
+									<Input placeholder='John Doe' {...field} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -55,7 +55,7 @@ function Page() {
 						name='email'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Email</Label>
+								<Label className='mt-4'>Email</Label>
 								<FormControl>
 									<Input placeholder='example@gmial.com' {...field} />
 								</FormControl>
@@ -68,7 +68,7 @@ function Page() {
 						name='password'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label>Password</Label>
+								<Label className='mt-4'>Password</Label>
 								<FormControl>
 									<Input placeholder='****' type='password' {...field} />
 								</FormControl>
@@ -76,7 +76,9 @@ function Page() {
 							</FormItem>
 						)}
 					/>
-					<Button type='submit'>Submit</Button>
+					<Button type='submit' className='w-full mt-4'>
+						Submit
+					</Button>
 				</form>
 			</Form>
 

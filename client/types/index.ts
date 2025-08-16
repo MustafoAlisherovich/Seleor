@@ -17,3 +17,23 @@ export interface QueryProps {
 	key: string
 	value?: string | null
 }
+
+export interface ReturnActionType {
+	user: IUser
+	failure: string
+}
+
+export interface IUser {
+	_id: string
+	fullName: string
+	email: string
+	password: string
+	role: string
+	orderCount: number
+	totalSpent: number
+	avatar: string
+	avatarKey: string
+	isDeleted: boolean
+	deletedAt: Date
+	favorites: IProduct[]
+}
