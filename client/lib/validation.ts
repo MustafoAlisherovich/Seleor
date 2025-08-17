@@ -52,3 +52,12 @@ export const passwordSchema = z
 		message: 'Passwords do not match',
 		path: ['confirmPassword'],
 	})
+
+export const verifyOtpSchema = z.object({
+	otp: z.string().length(6, { message: 'Otp must be 6 characters' }),
+	email: z.string().min(6, { message: 'Invalid email' }),
+})
+
+export const otpSchema = z.object({
+	otp: z.string().length(6, { message: 'Otp must be 6 characters' }),
+})

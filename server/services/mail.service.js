@@ -97,7 +97,7 @@ class MailService {
                 </table>
 
                 <p style="margin:16px 0 0; font-size:13px; color:#6b7280;" align="center">
-                  Copy the code and paste it into the verification screen on the site or app.
+                  Copy the code and paste it into the verification screen on the site.
                 </p>
 
                 <p style="margin:20px 0 0; font-size:12px; line-height:1.6; color:#6b7280;">
@@ -137,7 +137,7 @@ class MailService {
 		if (!lastRecord) return { failure: 'No OTP found for this email' }
 
 		if (lastRecord.expiresAt < new Date()) {
-			return { failure: 'OTP has expired' }
+			return { status: 301 }
 		}
 
 		const isValid = await bcrypt.compare(otp, lastRecord.otp)
@@ -147,7 +147,7 @@ class MailService {
 
 		await otpModel.delete
 
-		return { message: 'OTP verified successfully' }
+		return { status: 200 }
 	}
 }
 
