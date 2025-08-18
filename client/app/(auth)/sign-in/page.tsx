@@ -39,7 +39,6 @@ function Page() {
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
 		setLoading(true)
 		const res = await login(values)
-		console.log(res)
 
 		if (res?.serverError || res?.validationErrors || !res?.data) {
 			return onError('Something went wrong')
