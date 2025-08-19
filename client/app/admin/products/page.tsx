@@ -1,13 +1,25 @@
 import { getProducts } from '@/actions/admin.action'
 import Filter from '@/components/shared/filter'
+import Pagination from '@/components/shared/pagination'
 import { Separator } from '@/components/ui/separator'
-import { IProduct } from '@/types'
+import { IProduct, SearchParams } from '@/types'
 import AddProduct from '../_components/add-product'
 import ProductCard from '../_components/product.card'
 
-const Page = async () => {
-	const res = await getProducts()
+interface Props {
+	searchParams: SearchParams
+}
+
+const Page = async (props: Props) => {
+	const searchParams = await props.searchParams
+	const res = await getProducts({
+		searchQuery: `${searchParams.q || ''}`,
+		filter: `${searchParams.filter || ''}`,
+		category: `${searchParams.category || ''}`,
+		page: `${searchParams.page || '1'}`,
+	})
 	const products = res.data.products
+	const isNext = res.data.isNext || false
 	return (
 		<>
 			<div className='flex justify-between items-center w-full'>
@@ -17,7 +29,7 @@ const Page = async () => {
 
 			<Separator className='my-3' />
 
-			<Filter showCategory />
+			<Filter showSearch />
 
 			<div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-3'>
 				{products && products.length === 0 && (
@@ -28,6 +40,11 @@ const Page = async () => {
 						<ProductCard key={product._id} product={product} />
 					))}
 			</div>
+
+			<Pagination
+				isNext={isNext}
+				pageNumber={searchParams?.page ? +searchParams.page : 1}
+			/>
 		</>
 	)
 }

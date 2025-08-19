@@ -61,3 +61,19 @@ export const verifyOtpSchema = z.object({
 export const otpSchema = z.object({
 	otp: z.string().length(6, { message: 'Otp must be 6 characters' }),
 })
+
+export const updateProductSchema = z
+	.object({
+		id: z.string(),
+	})
+	.merge(productSchema)
+
+export const idSchema = z.object({ id: z.string() })
+
+export const searchParamsSchema = z.object({
+	searchQuery: z.string().optional(),
+	filter: z.string().optional(),
+	category: z.string().optional(),
+	page: z.string().default('1'),
+	pageSize: z.string().default('6'),
+})

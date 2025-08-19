@@ -3,7 +3,12 @@
 import { axiosClient } from '@/http/axios'
 import { authOptions } from '@/lib/auth-options'
 import { generateToken } from '@/lib/generate-token'
-import { productSchema } from '@/lib/validation'
+import {
+	idSchema,
+	productSchema,
+	searchParamsSchema,
+	updateProductSchema,
+} from '@/lib/validation'
 import { ReturnActionType } from '@/types'
 import { getServerSession } from 'next-auth'
 import { revalidatePath } from 'next/cache'
@@ -12,18 +17,21 @@ import { actionClient } from './safe.action'
 
 const utapi = new UTApi()
 
-export const getProducts = actionClient.action(async () => {
-	const session = await getServerSession(authOptions)
-	if (!session?.currentUser?._id) {
-		throw new Error('User ID is required to generate token')
-	}
-	const token = await generateToken(session.currentUser._id)
-	const { data } = await axiosClient.get('/api/admin/products', {
-		headers: { Authorization: `Bearer ${token}` },
-	})
+export const getProducts = actionClient
+	.schema(searchParamsSchema)
+	.action(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser?._id) {
+			throw new Error('User ID is required to generate token')
+		}
+		const token = await generateToken(session.currentUser._id)
+		const { data } = await axiosClient.get('/api/admin/products', {
+			headers: { Authorization: `Bearer ${token}` },
+			params: parsedInput,
+		})
 
-	return JSON.parse(JSON.stringify(data))
-})
+		return JSON.parse(JSON.stringify(data))
+	})
 
 export const createProduct = actionClient
 	.schema(productSchema)
@@ -39,6 +47,40 @@ export const createProduct = actionClient
 				...parsedInput,
 				price: parseFloat(parsedInput.price),
 			},
+			{ headers: { Authorization: `Bearer ${token}` } }
+		)
+		revalidatePath('/admin/products')
+		return JSON.parse(JSON.stringify(data))
+	})
+
+export const updateProduct = actionClient
+	.schema(updateProductSchema)
+	.action<ReturnActionType>(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser?._id) {
+			throw new Error('User ID is required to generate token')
+		}
+		const token = await generateToken(session.currentUser._id)
+
+		const { data } = await axiosClient.put(
+			`/api/admin/update-product/${parsedInput.id}`,
+			{ ...parsedInput, price: parseFloat(parsedInput.price) },
+			{ headers: { Authorization: `Bearer ${token}` } }
+		)
+		revalidatePath('/admin/products')
+		return JSON.parse(JSON.stringify(data))
+	})
+
+export const deleteProduct = actionClient
+	.schema(idSchema)
+	.action(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser?._id) {
+			throw new Error('User ID is required to generate token')
+		}
+		const token = await generateToken(session.currentUser._id)
+		const { data } = await axiosClient.delete(
+			`/api/admin/delete-product/${parsedInput.id}`,
 			{ headers: { Authorization: `Bearer ${token}` } }
 		)
 		revalidatePath('/admin/products')

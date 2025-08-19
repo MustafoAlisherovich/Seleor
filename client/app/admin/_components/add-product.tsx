@@ -1,6 +1,10 @@
 'use client'
 
-import { createProduct, deleteFile } from '@/actions/admin.action'
+import {
+	createProduct,
+	deleteFile,
+	updateProduct,
+} from '@/actions/admin.action'
 import { Button } from '@/components/ui/button'
 import {
 	Form,
@@ -36,13 +40,14 @@ import { productSchema } from '@/lib/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader, PlusCircle, X } from 'lucide-react'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 const AddProduct = () => {
 	const { setIsLoading, isLoading, onError } = UseAction()
-	const { open, setOpen } = useProduct()
+	const { open, setOpen, product, setProduct } = useProduct()
 
 	const form = useForm<z.infer<typeof productSchema>>({
 		resolver: zodResolver(productSchema),
@@ -59,15 +64,26 @@ const AddProduct = () => {
 	async function onSubmit(values: z.infer<typeof productSchema>) {
 		if (!form.watch('image')) return toast('Please upload image!')
 		setIsLoading(true)
-		const res = await createProduct(values)
-		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+		let res
+		if (product?._id) {
+			res = await updateProduct({ ...values, id: product._id })
+		} else {
+			res = await createProduct(values)
+			if (res?.serverError || res?.validationErrors || !res?.data) {
+				return onError('Something went wrong')
+			}
+			if (res.data?.failure) {
+				return onError(res.data.failure)
+			}
+			if (res.data.status === 201) {
+				toast.success('Product created successfully!')
+				setOpen(false)
+				form.reset()
+				setIsLoading(false)
+			}
 		}
-		if (res.data?.failure) {
-			return onError(res.data.failure)
-		}
-		if (res.data.status === 200) {
-			toast.success('Product created successfully!')
+		if (res.data?.status === 200) {
+			toast.success('Product updated successfully!')
 			setOpen(false)
 			form.reset()
 			setIsLoading(false)
@@ -76,6 +92,15 @@ const AddProduct = () => {
 
 	function onOpen() {
 		setOpen(true)
+		setProduct({
+			_id: '',
+			title: '',
+			description: '',
+			category: '',
+			price: 0,
+			image: '',
+			imageKey: '',
+		})
 	}
 
 	function onDeleteImage() {
@@ -83,6 +108,12 @@ const AddProduct = () => {
 		form.setValue('image', '')
 		form.setValue('imageKey', '')
 	}
+
+	useEffect(() => {
+		if (product) {
+			form.reset({ ...product, price: product.price.toString() })
+		}
+	}, [product])
 
 	return (
 		<>
@@ -154,7 +185,7 @@ const AddProduct = () => {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												{categories.map(category => (
+												{categories.slice(1).map(category => (
 													<SelectItem value={category} key={category}>
 														{category}
 													</SelectItem>
