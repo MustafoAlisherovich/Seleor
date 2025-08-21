@@ -17,8 +17,9 @@ import {
 
 interface Props {
 	showSearch?: boolean
+	showCategory?: boolean
 }
-const Filter: FC<Props> = ({ showSearch }) => {
+const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 	const searchParams = useSearchParams()
 	const router = useRouter()
 
@@ -64,7 +65,7 @@ const Filter: FC<Props> = ({ showSearch }) => {
 		<div
 			className={cn(
 				'gap-1 max-md:w-full grid',
-				showSearch ? 'grid-cols-3' : 'grid-cols-2',
+				showSearch && showCategory ? 'grid-cols-3' : 'grid-cols-2',
 				'max-md:grid-cols-1'
 			)}
 		>
@@ -92,21 +93,23 @@ const Filter: FC<Props> = ({ showSearch }) => {
 				</SelectContent>
 			</Select>
 
-			<Select onValueChange={onCategoryChange}>
-				<SelectTrigger className='bg-secondary text-xs w-full'>
-					<SelectValue
-						placeholder='Select category'
-						className='text-muted-foreground'
-					/>
-				</SelectTrigger>
-				<SelectContent>
-					{categories.map(category => (
-						<SelectItem value={category} key={category}>
-							{category}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+			{showCategory && (
+				<Select onValueChange={onCategoryChange}>
+					<SelectTrigger className='bg-secondary text-xs w-full'>
+						<SelectValue
+							placeholder='Select category'
+							className='text-muted-foreground'
+						/>
+					</SelectTrigger>
+					<SelectContent>
+						{categories.map(category => (
+							<SelectItem value={category} key={category}>
+								{category}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
 		</div>
 	)
 }

@@ -29,7 +29,7 @@ const Page = async (props: Props) => {
 
 			<Separator className='my-3' />
 
-			<Filter showSearch />
+			<Filter showSearch showCategory />
 
 			<div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-3'>
 				{products && products.length === 0 && (
