@@ -18,4 +18,4 @@ router.put('/update-password', userController.updatePassword)
 
 router.delete('/delete-favorite/:id', userController.deleteFavorite)
 
-module.exports = router
+module.exports = <router></router>

@@ -31,6 +31,7 @@ export interface ReturnActionType {
 	product: IProduct
 	products: IProduct[]
 	isNext: boolean
+	totalProducts: number
 	customers: IUser[]
 	orders: IOrder[]
 	transactions: ITransaction[]
