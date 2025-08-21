@@ -13,9 +13,9 @@ function Pagination({ isNext, pageNumber }: Props) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 
-	const onNavigation = (direcation: 'prev' | 'next') => {
+	const onNavigation = (direction: 'prev' | 'next') => {
 		const nextPageNumber =
-			direcation === 'prev' ? pageNumber - 1 : pageNumber + 1
+			direction === 'prev' ? pageNumber - 1 : pageNumber + 1
 
 		const newUrl = formUrlQuery({
 			key: 'page',
@@ -36,7 +36,7 @@ function Pagination({ isNext, pageNumber }: Props) {
 			>
 				Prev
 			</Button>
-			<p>1</p>
+			<p>{pageNumber}</p>
 			<Button
 				size={'sm'}
 				onClick={() => onNavigation('next')}

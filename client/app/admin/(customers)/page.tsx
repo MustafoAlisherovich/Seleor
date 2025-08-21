@@ -40,7 +40,10 @@ const Page = async (props: Props) => {
 			<Separator className='my-3' />
 
 			<Table>
-				<TableCaption>A list of your recent custoemrs.</TableCaption>
+				{customers && customers.length > 0 && (
+					<TableCaption>A list of your recent custoemrs.</TableCaption>
+				)}
+
 				<TableHeader>
 					<TableRow>
 						<TableHead>№</TableHead>

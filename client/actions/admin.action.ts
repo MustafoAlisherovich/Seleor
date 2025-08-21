@@ -63,6 +63,21 @@ export const getOrders = actionClient
 		return JSON.parse(JSON.stringify(data))
 	})
 
+export const getTransactions = actionClient
+	.schema(searchParamsSchema)
+	.action<ReturnActionType>(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser?._id) {
+			throw new Error('User ID is required to generate token')
+		}
+		const token = await generateToken(session.currentUser._id)
+		const { data } = await axiosClient.get('/api/admin/transactions', {
+			headers: { Authorization: `Bearer ${token}` },
+			params: parsedInput,
+		})
+		return JSON.parse(JSON.stringify(data))
+	})
+
 export const createProduct = actionClient
 	.schema(productSchema)
 	.action<ReturnActionType>(async ({ parsedInput }) => {

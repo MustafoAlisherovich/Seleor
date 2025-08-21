@@ -1,10 +1,27 @@
-import ProductCard from '@/components/card/product.card'
+import { getProducts } from '@/actions/user.actions'
 import Filter from '@/components/shared/filter'
-import { Button } from '@/components/ui/button'
+import LoadMore from '@/components/shared/load-more'
 import { Separator } from '@/components/ui/separator'
-import { products } from '@/constants'
+import { SearchParams } from '@/types'
 
-function Page() {
+interface Props {
+	searchParams: SearchParams
+}
+
+const Page = async (props: Props) => {
+	const searchParams = await props.searchParams
+	const res = await getProducts({
+		searchQuery: `${searchParams.q || ''}`,
+		filter: `${searchParams.filter || ''}`,
+		category: `${searchParams.category || ''}`,
+		page: `${searchParams.page || '1'}`,
+	})
+
+	const pageSize = 8
+
+	const products = res?.data?.products
+	const totalProducts = res?.data?.totalProducts
+
 	return (
 		<div className='container max-w-7xl mx-auto p-4 py-24'>
 			<div className='flex justify-between items-center flex-wrap gap-3'>
@@ -14,17 +31,11 @@ function Page() {
 
 			<Separator className='my-3' />
 
-			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-				{products.map(product => (
-					<ProductCard key={product._id} product={product} />
-				))}
-			</div>
-
-			<div className='mt-12 flex justify-center'>
-				<Button className='w-[40vw] h-[7vh]' variant={'secondary'}>
-					<span className='text-[16px] font-semibold'>Read More 10</span>
-				</Button>
-			</div>
+			<LoadMore
+				initialProducts={products}
+				totalProducts={totalProducts}
+				pageSize={pageSize}
+			/>
 		</div>
 	)
 }

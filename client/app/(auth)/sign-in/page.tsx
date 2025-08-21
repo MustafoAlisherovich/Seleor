@@ -13,31 +13,26 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import UseAction from '@/hooks/use-action'
 import { loginSchema } from '@/lib/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
 
 function Page() {
-	const [loading, setLoading] = useState(false)
+	const { isLoading, setIsLoading, onError } = UseAction()
 
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: { email: '', password: '' },
 	})
 
-	function onError(message: string) {
-		toast.error(message)
-		setLoading(false)
-	}
-
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
-		setLoading(true)
+		setIsLoading(true)
 		const res = await login(values)
 
 		if (res?.serverError || res?.validationErrors || !res?.data) {
@@ -49,7 +44,7 @@ function Page() {
 		if (res.data?.user) {
 			toast.success('Login successful')
 			signIn('credentials', { userId: res.data.user._id, callbackUrl: '/' })
-			setLoading(false)
+			setIsLoading(false)
 		}
 	}
 
@@ -72,7 +67,7 @@ function Page() {
 									<Input
 										placeholder='example@gmail.com'
 										{...field}
-										disabled={loading}
+										disabled={isLoading}
 									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
@@ -90,15 +85,15 @@ function Page() {
 										placeholder='****'
 										type='password'
 										{...field}
-										disabled={loading}
+										disabled={isLoading}
 									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
 						)}
 					/>
-					<Button type='submit' className='w-full mt-4' disabled={loading}>
-						Submit {loading && <Loader className='animate-spin' />}
+					<Button type='submit' className='w-full mt-4' disabled={isLoading}>
+						Submit {isLoading && <Loader className='animate-spin' />}
 					</Button>
 				</form>
 			</Form>

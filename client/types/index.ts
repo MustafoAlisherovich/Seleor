@@ -6,6 +6,8 @@ export type SearchParams = Promise<{
 	[key: string]: string | string[] | undefined
 }>
 
+export type Params = Promise<{ productId: string }>
+
 export interface IProduct {
 	title: string
 	category: string
@@ -26,10 +28,12 @@ export interface ReturnActionType {
 	user: IUser
 	failure: string
 	status: number
+	product: IProduct
 	products: IProduct[]
 	isNext: boolean
 	customers: IUser[]
 	orders: IOrder[]
+	transactions: ITransaction[]
 }
 
 export interface IUser {
@@ -55,4 +59,18 @@ export interface IOrder {
 	price: number
 	status: string
 	updateAt: Date
+}
+
+export interface ITransaction {
+	_id: string
+	id: string
+	user: IUser
+	product: IProduct
+	state: number
+	amount: number
+	create_time: number
+	perform_time: number
+	cancel_time: number
+	reason: number
+	provider: string
 }

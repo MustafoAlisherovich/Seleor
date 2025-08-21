@@ -1,18 +1,40 @@
 'use client'
 
+import { addFavorite } from '@/actions/user.actions'
+import UseAction from '@/hooks/use-action'
 import { formatPrice } from '@/lib/utils'
 import { IProduct } from '@/types'
 import { Heart } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { MouseEvent } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
 interface Props {
-	product: Partial<IProduct>
+	product: IProduct
 }
 
 function ProductCard({ product }: Props) {
 	const router = useRouter()
+	const { isLoading, setIsLoading, onError } = UseAction()
+
+	const onFavorite = async (e: MouseEvent) => {
+		e.stopPropagation()
+		setIsLoading(true)
+		const res = await addFavorite({ id: product._id })
+
+		if (res?.serverError || res?.validationErrors || !res?.data) {
+			return onError('Something went wrong')
+		}
+		if (res.data?.failure) {
+			return onError(res.data.failure)
+		}
+		if (res.data.status === 200) {
+			toast.success('Added to favorite')
+			setIsLoading(false)
+		}
+	}
 
 	return (
 		<div
@@ -28,7 +50,12 @@ function ProductCard({ product }: Props) {
 					alt={product.title!}
 				/>
 				<div className='absolute right-0 top-0 z-10 opacity-0 group-hover:opacity-100 transition-all'>
-					<Button size={'icon'} className='cursor-pointer'>
+					<Button
+						size={'icon'}
+						className='cursor-pointer'
+						disabled={isLoading}
+						onClick={onFavorite}
+					>
 						<Heart />
 					</Button>
 				</div>
