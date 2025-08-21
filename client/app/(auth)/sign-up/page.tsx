@@ -49,8 +49,6 @@ function Page() {
 		setIsLoading(true)
 		const res = await sendOtp({ email: values.email })
 
-		console.log(res)
-
 		if (res?.serverError || res?.validationErrors || !res?.data) {
 			return onError('Something went wrong')
 		}

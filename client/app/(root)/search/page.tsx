@@ -48,7 +48,7 @@ export default function SearchPage() {
 
 	return (
 		<div className='container max-w-7xl mx-auto p-4 py-28'>
-			<h1 className='text-2xl font-bold mb-6'>Search results for: "{query}"</h1>
+			<h1 className='text-2xl font-bold mb-6'>Products</h1>
 
 			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
 				{products.map(product => (

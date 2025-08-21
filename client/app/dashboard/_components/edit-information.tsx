@@ -1,12 +1,13 @@
 'use client'
 
+import { updateUser } from '@/actions/user.actions'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
@@ -15,25 +16,64 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import { Edit2 } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
+import UseAction from '@/hooks/use-action'
+import { UploadDropzone } from '@/lib/uploadthing'
+import { IUser } from '@/types'
+import { Edit2, Loader } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import EmailForm from './email.form'
 import FullNameForm from './full-name.form'
 
-const EditInformation = () => {
+interface Props {
+	user: IUser
+}
+
+const EditInformation = ({ user }: Props) => {
+	const { isLoading, setIsLoading, onError } = UseAction()
+	const { update } = useSession()
+	const [open, setOpen] = useState(false)
+
+	const onUpdateAvatar = async (avatar: string, avatarKey: string) => {
+		setIsLoading(true)
+		const res = await updateUser({ avatar, avatarKey })
+
+		if (res?.serverError || res?.validationErrors || !res?.data) {
+			return onError('Something went wrong')
+		}
+		if (res.data?.failure) {
+			return onError(res.data.failure)
+		}
+		if (res.data.status === 200) {
+			toast.success('Avatar successfully updated')
+			update()
+			setOpen(false)
+			setIsLoading(false)
+		}
+	}
+
 	return (
 		<>
 			<div className='w-full h-52 bg-secondary flex justify-center items-center'>
 				<div className='relative'>
+					{isLoading && (
+						<Skeleton className='absolute inset-0 bg-secondary z-50 flex items-center justify-center'>
+							<Loader className='animate-spin' />
+						</Skeleton>
+					)}
 					<Avatar className='size-32'>
+						<AvatarImage src={user.avatar} alt={user.fullName} />
 						<AvatarFallback className='bg-primary text-white text-6xl'>
-							CN
+							{user.fullName.charAt(0).toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
-					<Dialog>
+					<Dialog open={open} onOpenChange={setOpen}>
 						<DialogTrigger asChild>
 							<Button
 								size={'icon'}
-								className='absolute right-0 bottom-0 rounded-full border border-primary'
+								className='absolute right-0 bottom-0 rounded-full border border-primary cursor-pointer'
 								variant={'secondary'}
 							>
 								<Edit2 />
@@ -43,6 +83,14 @@ const EditInformation = () => {
 							<DialogHeader>
 								<DialogTitle />
 							</DialogHeader>
+							<UploadDropzone
+								endpoint={'imageUploader'}
+								config={{ appendOnPaste: true, mode: 'auto' }}
+								appearance={{ container: { height: 200, padding: 10 } }}
+								onClientUploadComplete={res =>
+									onUpdateAvatar(res[0].url, res[0].key)
+								}
+							/>
 						</DialogContent>
 					</Dialog>
 				</div>
@@ -51,27 +99,25 @@ const EditInformation = () => {
 			<div className='my-3 bg-secondary px-4'>
 				<Accordion type='single' collapsible>
 					<AccordionItem value='item-1'>
-						<AccordionTrigger>
+						<AccordionTrigger className='cursor-pointer'>
 							<div className='flex flex-col space-y-0'>
 								<h2 className='font-bold'>Full Name</h2>
-								<p className='text-muted-foreground'>Juraboev Mustafo</p>
+								<p className='text-muted-foreground'>{user.fullName}</p>
 							</div>
 						</AccordionTrigger>
 						<AccordionContent className='border-l border-l-primary pl-4'>
-							<FullNameForm />
+							<FullNameForm user={user} />
 						</AccordionContent>
 					</AccordionItem>
 					<AccordionItem value='item-2'>
-						<AccordionTrigger>
+						<AccordionTrigger className='cursor-pointer'>
 							<div className='flex flex-col space-y-0'>
 								<h2 className='font-bold'>Email</h2>
-								<p className='text-muted-foreground'>
-									info@mustafoalisherovich.ru
-								</p>
+								<p className='text-muted-foreground'>{user.email}</p>
 							</div>
 						</AccordionTrigger>
 						<AccordionContent className='border-l border-l-primary pl-4'>
-							<EmailForm />
+							<EmailForm user={user} />
 						</AccordionContent>
 					</AccordionItem>
 				</Accordion>

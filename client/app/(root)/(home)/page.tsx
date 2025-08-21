@@ -19,8 +19,8 @@ const Page = async (props: Props) => {
 
 	const pageSize = 8
 
-	const products = res?.data?.products
-	const totalProducts = res?.data?.totalProducts
+	const products = res?.data?.products || []
+	const totalProducts = res?.data?.totalProducts || 0
 
 	return (
 		<div className='container max-w-7xl mx-auto p-4 py-24'>

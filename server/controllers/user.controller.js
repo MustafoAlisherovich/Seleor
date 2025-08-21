@@ -97,14 +97,16 @@ class UserController {
 	// [GET] /user/statistics
 	async getStatistics(req, res, next) {
 		try {
-			const userId = '689efa151051c1578aeb243e'
+			const userId = req.user._id
 			const user = await userModel.findById(userId)
+			if (!user) return res.json({ failure: 'User not found' })
 			const totalOrders = await orderModel.countDocuments({ user: userId })
 			const totalTransactions = await transactionModel.countDocuments({
 				user: userId,
 			})
-			const totalFavorites = user.favorites.length
-			return res.json({ totalOrders, totalTransactions, totalFavorites })
+			const totalFavourites = user.favorites.length
+			const statistics = { totalOrders, totalTransactions, totalFavourites }
+			return res.json({ statistics })
 		} catch (error) {
 			next(error)
 		}
@@ -132,12 +134,11 @@ class UserController {
 	// [PUT] /user/update-profile
 	async updateProfile(req, res, next) {
 		try {
-			const { name, email } = req.body
-			const userId = '689efa151051c1578aeb243e'
-			const user = await userModel.findById(userId)
-			user.set(req.body)
-			await user.save()
-			return res.json(user)
+			const userId = req.user._id
+			const user = userModel.findById(userId)
+			if (!user) return res.json({ failure: 'User not found' })
+			await userModel.findByIdAndUpdate(userId, req.body)
+			return res.json({ status: 200 })
 		} catch (error) {
 			next(error)
 		}
@@ -147,15 +148,18 @@ class UserController {
 	async updatePassword(req, res, next) {
 		try {
 			const { oldPassword, newPassword } = req.body
-			const userId = '689efa151051c1578aeb243e'
+			const userId = req.user._id
 			const user = await userModel.findById(userId)
-			const isMatch = await bcrypt.compare(oldPassword, user.password)
-			if (!isMatch)
-				return res.status(400).json({ message: 'Old password is incorrect' })
+			if (!user) return res.json({ failure: 'User not found' })
+
+			const isPasswordMatch = await bcrypt.compare(oldPassword, user.password)
+			if (!isPasswordMatch)
+				return res.json({ failure: 'Old password is incorrect' })
+
 			const hashedPassword = await bcrypt.hash(newPassword, 10)
 			await userModel.findByIdAndUpdate(userId, { password: hashedPassword })
-			await user.save()
-			return res.json({ message: 'Password updated successfully' })
+
+			return res.json({ status: 200 })
 		} catch (error) {
 			next(error)
 		}
