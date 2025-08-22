@@ -19,8 +19,6 @@ function Page() {
 					<WishlistCard key={product._id} product={product} />
 				))}
 			</div>
-
-			<Pagination />
 		</>
 	)
 }

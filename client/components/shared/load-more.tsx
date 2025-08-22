@@ -2,62 +2,71 @@
 
 import { getProducts } from '@/actions/user.actions'
 import ProductCard from '@/components/card/product.card'
-import { Button } from '@/components/ui/button'
-import UseAction from '@/hooks/use-action'
 import { IProduct } from '@/types'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { Button } from '../ui/button'
 
-interface Props {
-	initialProducts: IProduct[]
+type Props = {
+	initialCount: number
+	initialPage: number
 	totalProducts: number
-	pageSize: number
+	initialQuery: string // searchParams.toString()
 }
 
-export default function ProductsList({
-	initialProducts,
+export default function LoadMore({
+	initialCount,
+	initialPage,
 	totalProducts,
-	pageSize,
+	initialQuery,
 }: Props) {
-	const [products, setProducts] = useState<IProduct[]>(initialProducts)
-	const [page, setPage] = useState(1)
-	const { isLoading, setIsLoading } = UseAction()
+	const [appended, setAppended] = useState<IProduct[]>([])
+	const [page, setPage] = useState<number>(initialPage)
+	const [loading, setLoading] = useState(false)
 
-	const loadMore = async () => {
-		setIsLoading(true)
-		const nextPage = page + 1
+	const handleLoadMore = async () => {
+		if (loading) return
+		setLoading(true)
+
+		const params = new URLSearchParams(initialQuery)
 		const res = await getProducts({
-			page: String(nextPage),
-			pageSize: String(pageSize),
-		}).finally(() => setIsLoading(false))
+			searchQuery: params.get('q') || '',
+			filter: params.get('filter') || '',
+			category: params.get('category') || '',
+			page: String(page + 1),
+		})
 
-		setProducts(prev => [...prev, ...(res?.data?.products ?? [])])
-		setPage(nextPage)
+		const newProducts = res?.data?.products || []
+		setAppended(prev => [...prev, ...newProducts])
+		setPage(prev => prev + 1)
+		setLoading(false)
 	}
 
-	return (
-		<div>
-			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-				{products.map(product => (
-					<ProductCard key={product._id} product={product} />
-				))}
-			</div>
+	const currentTotal = initialCount + appended.length
 
-			{products.length < totalProducts && (
-				<div className='flex justify-center mt-8'>
-					{isLoading ? (
-						<Loader2 className='animate-spin size-14 text-muted-foreground' />
+	return (
+		<>
+			{/* appended productlar shu grid ichida server-rendered productlardan keyin chiqadi */}
+			{appended.map(product => (
+				<ProductCard key={product._id} product={product} />
+			))}
+
+			{/* Tugma uchun col-span-full yordamida tugma grid ichida qatorni egallaydi */}
+			{currentTotal < totalProducts && (
+				<div className='flex justify-center mt-6 col-span-full'>
+					{loading ? (
+						<Loader2 className='text-primary size-14 animate-spin' />
 					) : (
 						<Button
-							className='w-[40vw] h-[7vh] cursor-pointer border'
+							className='w-[40vw] h-[7vh] cursor-pointer'
 							variant={'secondary'}
-							onClick={loadMore}
+							onClick={handleLoadMore}
 						>
-							<span className='text-[16px] font-semibold'>Read More</span>
+							<span className='text-[16px] font-semibold'>Read More 12</span>
 						</Button>
 					)}
 				</div>
 			)}
-		</div>
+		</>
 	)
 }
