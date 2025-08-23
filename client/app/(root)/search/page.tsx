@@ -31,14 +31,21 @@ export default function SearchPage() {
 	}, [query])
 
 	return (
-		<div className='container max-w-7xl mx-auto p-4 py-28'>
-			<h1 className='text-2xl font-bold mb-6'>Products</h1>
+		<div className='container max-w-7xl mx-auto p-6 py-28'>
+			<h1 className='text-3xl font-bold mb-8 text-center md:text-left'>
+				Products
+			</h1>
 
 			{!isLoading && products.length === 0 ? (
-				<NotFound />
+				<div className='flex flex-col items-center justify-center py-16'>
+					<NotFound />
+					<p className='mt-4 text-gray-500 text-sm'>
+						We couldn’t find any products matching your search.
+					</p>
+				</div>
 			) : (
 				<>
-					<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+					<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
 						{products.map(product => (
 							<ProductCard key={product._id} product={product} />
 						))}

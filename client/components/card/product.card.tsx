@@ -41,29 +41,31 @@ function ProductCard({ product }: Props) {
 			onClick={() => router.push(`./product/${product._id}`)}
 			className='cursor-pointer'
 		>
-			<div className='bg-secondary relative group'>
+			<div className='bg-secondary relative group rounded-2xl shadow-md overflow-hidden'>
 				<Image
 					src={product.image!}
 					width={300}
 					height={300}
-					className='mx-auto'
+					className='mx-auto object-cover transition-transform duration-300 group-hover:scale-105'
 					alt={product.title!}
 				/>
-				<div className='absolute right-0 top-0 z-10 opacity-0 group-hover:opacity-100 transition-all'>
+				{/* Favorite button */}
+				<div className='absolute right-3 top-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity'>
 					<Button
-						size={'icon'}
-						className='cursor-pointer'
+						size='icon'
+						className='cursor-pointer rounded-full bg-white shadow-md hover:bg-gray-100'
 						disabled={isLoading}
 						onClick={onFavorite}
 					>
-						<Heart />
+						<Heart className='w-5 h-5 text-red-500' />
 					</Button>
 				</div>
 			</div>
 
-			<div className='flex justify-between items-center mt-2 text-sm'>
-				<h1 className='font-bold line-clamp-1'>{product.title}</h1>
-				<p className='font-medium'>{formatPrice(product.price!)}</p>
+			{/* Title & Price */}
+			<div className='flex justify-between items-center mt-3 text-sm'>
+				<h1 className='font-semibold line-clamp-1'>{product.title}</h1>
+				<p className='font-bold text-primary'>{formatPrice(product.price!)}</p>
 			</div>
 		</div>
 	)

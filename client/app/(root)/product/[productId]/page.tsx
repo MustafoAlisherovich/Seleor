@@ -1,10 +1,10 @@
 import { getProduct } from '@/actions/user.actions'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
 import { Params } from '@/types'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import Cart from './_components/product.cart'
 
 interface Props {
 	params: Params
@@ -48,19 +48,7 @@ async function Page({ params }: Props) {
 				</p>
 
 				{/* Actions */}
-				<div className='flex gap-4 pt-2'>
-					<Button size='lg' className='cursor-pointer shadow-md'>
-						Add to Cart
-					</Button>
-					<Button
-						size='lg'
-						variant='destructive'
-						className='cursor-pointer shadow-md'
-					>
-						Buy Now
-					</Button>
-				</div>
-
+				<Cart product={product} />
 				{/* Extra info */}
 				<div className='text-xs text-muted-foreground space-y-1 pt-4 border-t'>
 					<p>🚚 Free shipping on orders over $50</p>

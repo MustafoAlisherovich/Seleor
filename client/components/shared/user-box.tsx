@@ -23,7 +23,7 @@ const UserBox: FC<Props> = ({ user }) => {
 		<>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Avatar className='cursor-pointer'>
+					<Avatar className='cursor-pointer size-10'>
 						<AvatarImage src={user.avatar} alt={user.fullName} />
 						<AvatarFallback className='capitalize bg-primary text-white'>
 							{user.fullName.charAt(0)}
