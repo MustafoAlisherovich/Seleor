@@ -1,4 +1,6 @@
+import { getTransactions } from '@/actions/user.actions'
 import Filter from '@/components/shared/filter'
+import Pagination from '@/components/shared/pagination'
 import { Separator } from '@/components/ui/separator'
 import {
 	Table,
@@ -9,10 +11,24 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { products } from '@/constants'
 import { formatPrice } from '@/lib/utils'
+import { SearchParams } from '@/types'
 
-function Page() {
+interface Props {
+	searchParams: SearchParams
+}
+
+const Page = async (props: Props) => {
+	const searchParams = await props.searchParams
+	const res = await getTransactions({
+		searchQuery: `${searchParams.q || ''}`,
+		filter: `${searchParams.filter || ''}`,
+		page: `${searchParams.page || '1'}`,
+	})
+
+	const transactions = res?.data?.transactions
+	const isNext = res?.data?.isNext || false
+
 	return (
 		<>
 			<div className='flex justify-between items-center w-full'>
@@ -23,7 +39,9 @@ function Page() {
 			<Separator className='my-3' />
 
 			<Table className='text-sm'>
-				<TableCaption>A list of your recent payments.</TableCaption>
+				{transactions && transactions.length > 0 && (
+					<TableCaption>A list of your recent orders.</TableCaption>
+				)}
 				<TableHeader>
 					<TableRow>
 						<TableHead>Product</TableHead>
@@ -33,19 +51,31 @@ function Page() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{products.map(product => (
-						<TableRow key={product._id}>
-							<TableCell>{product.title}</TableCell>
-							<TableCell>Paypal</TableCell>
-							<TableCell>Paid</TableCell>
-							<TableCell>10 Nov 2025</TableCell>
-							<TableCell className='text-right'>
-								{formatPrice(product.price)}
+					{transactions && transactions.length === 0 && (
+						<TableRow>
+							<TableCell colSpan={5} className='text-center'>
+								No orders found.
 							</TableCell>
 						</TableRow>
-					))}
+					)}
+					{transactions &&
+						transactions.map(transactions => (
+							<TableRow key={transactions._id}>
+								<TableCell>{transactions.product.title}</TableCell>
+								<TableCell>{transactions.provider}</TableCell>
+								<TableCell>{transactions.state}</TableCell>
+								<TableCell className='text-right'>
+									{formatPrice(transactions.amount)}
+								</TableCell>
+							</TableRow>
+						))}
 				</TableBody>
 			</Table>
+
+			<Pagination
+				isNext={isNext}
+				pageNumber={searchParams?.page ? +searchParams.page : 1}
+			/>
 		</>
 	)
 }

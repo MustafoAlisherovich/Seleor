@@ -64,7 +64,7 @@ export interface IOrder {
 	createdAt: Date
 	price: number
 	status: string
-	updateAt: Date
+	updatedAt: Date
 }
 
 export interface ITransaction {

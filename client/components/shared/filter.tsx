@@ -72,7 +72,7 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 			{showSearch && (
 				<div className='flex items-center bg-secondary border w-full'>
 					<Input
-						placeholder='Qidirish'
+						placeholder='Search'
 						className='text-xs border-none no-focus flex-1'
 						onChange={handleSearchDebounce}
 					/>

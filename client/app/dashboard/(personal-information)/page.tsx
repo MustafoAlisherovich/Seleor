@@ -43,7 +43,7 @@ const Page = async () => {
 						<h1 className='text-4xl font-bold'>
 							{statistics?.totalFavourites}
 						</h1>
-						<p>Watch list</p>
+						<p>Wishlist</p>
 					</div>
 				</div>
 			</div>
