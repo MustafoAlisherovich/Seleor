@@ -75,7 +75,7 @@ export const searchParamsSchema = z.object({
 	filter: z.string().optional(),
 	category: z.string().optional(),
 	page: z.string().default('1'),
-	pageSize: z.string().default('4'),
+	pageSize: z.string().default('12'),
 })
 
 export const updateUserSchema = z.object({
