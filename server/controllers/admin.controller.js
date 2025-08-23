@@ -2,6 +2,7 @@ const orderModel = require('../models/order.model')
 const productModel = require('../models/product.model')
 const transactionModel = require('../models/transaction.model')
 const userModel = require('../models/user.model')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 class AdminController {
 	constructor() {
@@ -273,23 +274,67 @@ class AdminController {
 	// [POST] /admin/create-product
 	async createProduct(req, res, next) {
 		try {
+			const userId = req.user._id
+
 			const newProduct = await productModel.create(req.body)
+
+			const product = await stripe.products.create({
+				name: newProduct.title,
+				images: [newProduct.image],
+				metadata: {
+					productId: newProduct._id.toString(),
+					userId: userId.toString(),
+				},
+			})
+
+			const amountInUSD = newProduct.price
+			const price = await stripe.prices.create({
+				product: product.id,
+				unit_amount: Math.round(amountInUSD * 100),
+				currency: 'usd',
+				metadata: {
+					productId: newProduct._id.toString(),
+					userId: userId.toString(),
+				},
+			})
+
+			await productModel.findByIdAndUpdate(newProduct._id, {
+				stripeProductId: product.id,
+				stripePriceId: price.id,
+			})
+
 			if (!newProduct)
 				return res.json({ failure: 'Failed while creating product' })
+
 			return res.json({ status: 201 })
 		} catch (error) {
 			console.log(error)
 			next(error)
 		}
 	}
+
 	// [PUT] /admin/update-product/:id
 	async updateProduct(req, res, next) {
 		try {
 			const data = req.body
 			const { id } = req.params
-			const updatedProduct = await productModel.findByIdAndUpdate(id, data)
-			if (!updatedProduct)
-				return res.json({ failure: 'Failed while updating product' })
+			const userId = req.user._id
+			const updatedProduct = await productModel.findByIdAndUpdate(id, data, {
+				new: true,
+			})
+			const amountInUSD = updatedProduct.price
+			const price = await stripe.prices.create({
+				product: updatedProduct.stripeProductId,
+				unit_amount: amountInUSD.toFixed(0) * 100,
+				currency: 'usd',
+				metadata: {
+					productId: updatedProduct._id.toString(),
+					userId: userId.toString(),
+				},
+			})
+			await productModel.findByIdAndUpdate(updatedProduct._id, {
+				stripePriceId: price.id,
+			})
 			return res.json({ status: 200 })
 		} catch (error) {
 			next(error)
@@ -300,12 +345,13 @@ class AdminController {
 	async deleteProduct(req, res, next) {
 		try {
 			const { id } = req.params
-			const deletedProduct = await productModel.findByIdAndDelete(id)
-			if (!deletedProduct) {
-				return res.json({ message: 'Product deletion failed' })
-			}
+			const product = await productModel.findById(id)
+			await stripe.prices.update(product.stripePriceId, { active: false })
+			await stripe.products.update(product.stripeProductId, { active: false })
+			await productModel.findByIdAndDelete(id)
 			return res.json({ status: 200 })
 		} catch (error) {
+			console.log(error)
 			next(error)
 		}
 	}

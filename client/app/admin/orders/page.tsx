@@ -15,13 +15,13 @@ import {
 import { formatPrice } from '@/lib/utils'
 import { SearchParams } from '@/types'
 import { format } from 'date-fns'
+import { FC } from 'react'
 import OrderActions from '../_components/order-actions'
 
 interface Props {
 	searchParams: SearchParams
 }
-
-const Page = async (props: Props) => {
+const Page: FC<Props> = async props => {
 	const searchParams = await props.searchParams
 	const res = await getOrders({
 		searchQuery: `${searchParams.q || ''}`,
@@ -36,7 +36,7 @@ const Page = async (props: Props) => {
 		<>
 			<div className='flex justify-between items-center w-full'>
 				<h1 className='text-xl font-bold'>Orders</h1>
-				<Filter showSearch />
+				<Filter />
 			</div>
 
 			<Separator className='my-3' />
@@ -45,7 +45,6 @@ const Page = async (props: Props) => {
 				{orders && orders.length > 0 && (
 					<TableCaption>A list of your recent orders.</TableCaption>
 				)}
-
 				<TableHeader>
 					<TableRow>
 						<TableHead>Product</TableHead>
@@ -59,8 +58,8 @@ const Page = async (props: Props) => {
 				<TableBody>
 					{orders && orders.length === 0 && (
 						<TableRow>
-							<TableCell className='text-center' colSpan={6}>
-								No orders found
+							<TableCell colSpan={6} className='text-center'>
+								No orders found.
 							</TableCell>
 						</TableRow>
 					)}
@@ -90,7 +89,7 @@ const Page = async (props: Props) => {
 
 			<Pagination
 				isNext={isNext}
-				pageNumber={searchParams.page ? +searchParams.page : 1}
+				pageNumber={searchParams?.page ? +searchParams.page : 1}
 			/>
 		</>
 	)
