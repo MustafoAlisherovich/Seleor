@@ -3,6 +3,9 @@ const productModel = require('../models/product.model')
 const transactionModel = require('../models/transaction.model')
 const userModel = require('../models/user.model')
 const bcrypt = require('bcrypt')
+const { getCustomers } = require('./admin.controller')
+const { getCustomer } = require('../libs/customer')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 class UserController {
 	// [GET] /user/products
@@ -254,6 +257,44 @@ class UserController {
 				$push: { favorites: productId },
 			})
 			return res.json({ status: 200 })
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	// [POST] /user/stripeCheckout
+	async stripeCheckout(req, res, next) {
+		try {
+			const { cart } = req.body
+
+			const currentUser = req.user
+			const customer = await getCustomer(currentUser._id)
+
+			const productIds = cart.map(item => item.productId)
+			const products = await productModel.find({ _id: { $in: productIds } })
+
+			const line_items = cart.map(item => {
+				const product = products.find(p => p._id.toString() === item.productId)
+				return {
+					price: product.stripePriceId,
+					quantity: item.quantity,
+				}
+			})
+
+			const session = await stripe.checkout.sessions.create({
+				payment_method_types: ['card'],
+				customer: customer.id,
+				mode: 'payment',
+				metadata: {
+					userId: currentUser._id.toString(),
+					cart: JSON.stringify(cart), // butun cartni metadata’da saqlash mumkin
+				},
+				line_items,
+				success_url: `${process.env.CLIENT_URL}/success?userId=${currentUser._id}`,
+				cancel_url: `${process.env.CLIENT_URL}/cancel?userId=${currentUser._id}`,
+			})
+
+			return res.json({ status: 200, checkoutUrl: session.url })
 		} catch (error) {
 			next(error)
 		}

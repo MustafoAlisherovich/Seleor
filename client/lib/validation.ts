@@ -86,3 +86,12 @@ export const updateUserSchema = z.object({
 	isDeleted: z.boolean().optional(),
 	deletedAt: z.date().optional(),
 })
+
+export const cartSchema = z.object({
+	cart: z.array(
+		z.object({
+			productId: z.string(),
+			quantity: z.number().min(1),
+		})
+	),
+})

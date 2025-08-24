@@ -4,6 +4,7 @@ import { axiosClient } from '@/http/axios'
 import { authOptions } from '@/lib/auth-options'
 import { generateToken } from '@/lib/generate-token'
 import {
+	cartSchema,
 	idSchema,
 	passwordSchema,
 	searchParamsSchema,
@@ -105,6 +106,25 @@ export const addFavorite = actionClient
 			{ productId: parsedInput.id },
 			{ headers: { Authorization: `Bearer ${token}` } }
 		)
+		return JSON.parse(JSON.stringify(data))
+	})
+
+export const stripeCheckout = actionClient
+	.schema(cartSchema)
+	.action<ReturnActionType>(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser) {
+			return { failure: 'You must be logged in to checkout' }
+		}
+
+		const token = await generateToken(session?.currentUser?._id)
+
+		const { data } = await axiosClient.post(
+			'/api/user/stripe/checkout',
+			{ cart: parsedInput.cart },
+			{ headers: { Authorization: `Bearer ${token}` } }
+		)
+
 		return JSON.parse(JSON.stringify(data))
 	})
 

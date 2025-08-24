@@ -10,7 +10,7 @@ interface Props {
 }
 
 function Cart({ product }: Props) {
-	const { addToCart, carts } = useCart()
+	const { addToCart } = useCart()
 	const router = useRouter()
 
 	const handleCartAction = (buyNow = false) => {
@@ -19,8 +19,6 @@ function Cart({ product }: Props) {
 			router.push('/shopping/cart')
 		}
 	}
-
-	console.log(carts)
 
 	return (
 		<div className='flex gap-4 pt-2'>

@@ -30,6 +30,7 @@ export interface ReturnActionType {
 	status: number
 	product: IProduct
 	products: IProduct[]
+	checkoutUrl: string
 	isNext: boolean
 	totalProducts: number
 	customers: IUser[]
