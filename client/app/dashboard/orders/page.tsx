@@ -64,11 +64,25 @@ const Page = async (props: Props) => {
 					{orders &&
 						orders.map(order => (
 							<TableRow key={order._id}>
-								<TableCell>{order.product.title}</TableCell>
+								<TableCell>
+									{order.products.map((item, i) => (
+										<div key={i}>
+											{item.product.title}{' '}
+											<span className='text-primary'>x {item.quantity}</span>
+										</div>
+									))}
+								</TableCell>
 								<TableCell>
 									<Badge>{order.status}</Badge>
 								</TableCell>
-								<TableCell>{formatPrice(order.price)}</TableCell>
+								<TableCell>
+									{formatPrice(
+										order.products.reduce(
+											(total, p) => total + p.product.price * p.quantity,
+											0
+										)
+									)}
+								</TableCell>
 								<TableCell>
 									{format(new Date(order.createdAt), 'dd-MMM yyyy')}
 								</TableCell>

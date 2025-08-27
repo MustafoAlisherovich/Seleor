@@ -1,6 +1,7 @@
 import { getTransactions } from '@/actions/user.actions'
 import Filter from '@/components/shared/filter'
 import Pagination from '@/components/shared/pagination'
+import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
 	Table,
@@ -11,8 +12,9 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, getStatusText, getStatusVariant } from '@/lib/utils'
 import { SearchParams } from '@/types'
+import Image from 'next/image'
 
 interface Props {
 	searchParams: SearchParams
@@ -26,7 +28,7 @@ const Page = async (props: Props) => {
 		page: `${searchParams.page || '1'}`,
 	})
 
-	const transactions = res?.data?.transactions
+	const transaction = res?.data?.transactions
 	const isNext = res?.data?.isNext || false
 
 	return (
@@ -39,11 +41,12 @@ const Page = async (props: Props) => {
 			<Separator className='my-3' />
 
 			<Table className='text-sm'>
-				{transactions && transactions.length > 0 && (
+				{transaction && transaction.length > 0 && (
 					<TableCaption>A list of your recent orders.</TableCaption>
 				)}
 				<TableHeader>
 					<TableRow>
+						<TableHead></TableHead>
 						<TableHead>Product</TableHead>
 						<TableHead>Provider</TableHead>
 						<TableHead>Status</TableHead>
@@ -51,21 +54,48 @@ const Page = async (props: Props) => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{transactions && transactions.length === 0 && (
+					{transaction && transaction.length === 0 && (
 						<TableRow>
 							<TableCell colSpan={5} className='text-center'>
 								No orders found.
 							</TableCell>
 						</TableRow>
 					)}
-					{transactions &&
-						transactions.map(transactions => (
-							<TableRow key={transactions._id}>
-								<TableCell>{transactions.product.title}</TableCell>
-								<TableCell>{transactions.provider}</TableCell>
-								<TableCell>{transactions.state}</TableCell>
+					{transaction &&
+						transaction.map(transaction => (
+							<TableRow key={transaction._id}>
+								<TableCell>
+									{transaction.products.map((item, i) => (
+										<div key={i}>
+											<Image
+												src={item.image}
+												alt={item.title}
+												width={50}
+												height={50}
+											/>
+										</div>
+									))}
+								</TableCell>
+								<TableCell>
+									{transaction.products.map((item, i) => (
+										<div key={i}>
+											{item.title}{' '}
+											<span className='text-primary'>x {item.quantity}</span>
+										</div>
+									))}
+								</TableCell>
+								<TableCell>
+									<Badge className='capitalize' variant={'secondary'}>
+										{transaction.provider}
+									</Badge>
+								</TableCell>
+								<TableCell>
+									<Badge variant={getStatusVariant(transaction.state)}>
+										{getStatusText(transaction.state)}
+									</Badge>
+								</TableCell>
 								<TableCell className='text-right'>
-									{formatPrice(transactions.amount)}
+									{formatPrice(transaction.amount)}
 								</TableCell>
 							</TableRow>
 						))}

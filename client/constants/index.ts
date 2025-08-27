@@ -74,26 +74,9 @@ export const adminSidebar = [
 	{ name: 'Payments', route: '/admin/payments', icon: Banknote },
 ]
 
-export const carouselItems = [
-	{
-		id: 1,
-		title: 'Product 1',
-		img: '/images/product1.jpg',
-		desc: 'Short description for product 1',
-		price: '$29.99',
-	},
-	{
-		id: 2,
-		title: 'Product 2',
-		img: '/images/product2.jpg',
-		desc: 'Short description for product 2',
-		price: '$39.99',
-	},
-	{
-		id: 3,
-		title: 'Product 3',
-		img: '/images/product3.jpg',
-		desc: 'Short description for product 3',
-		price: '$49.99',
-	},
-]
+export const TransactionState = {
+	Paid: 2,
+	Pending: 1,
+	PendingCanceled: -1,
+	PaidCanceled: -2,
+}

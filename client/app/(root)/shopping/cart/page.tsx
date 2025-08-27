@@ -16,11 +16,11 @@ function Cart() {
 	const onStripe = async () => {
 		setIsLoading(true)
 
-		// zustand cartni olib, backendga yuboramiz
 		const res = await stripeCheckout({
 			cart: carts.map(item => ({
 				productId: item._id,
 				quantity: item.quantity,
+				price: item.price,
 			})),
 		})
 
@@ -89,19 +89,9 @@ function Cart() {
 							</div>
 
 							<div className='flex items-center justify-between text-sm'>
-								<div className='font-space-grotesk font-bold'>Taxes</div>
-								<div className='font-medium'>
-									{taxes().toLocaleString('en-US', {
-										style: 'currency',
-										currency: 'USD',
-									})}
-								</div>
-							</div>
-
-							<div className='flex items-center justify-between text-sm'>
 								<div className='font-space-grotesk font-bold'>Total</div>
 								<div className='font-medium'>
-									{(totalPrice() + taxes()).toLocaleString('en-US', {
+									{totalPrice().toLocaleString('en-US', {
 										style: 'currency',
 										currency: 'USD',
 									})}
@@ -116,7 +106,7 @@ function Cart() {
 									onClick={onStripe}
 								>
 									<span>
-										{(totalPrice() + taxes()).toLocaleString('en-US', {
+										{totalPrice().toLocaleString('en-US', {
 											style: 'currency',
 											currency: 'USD',
 										})}

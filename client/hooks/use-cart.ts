@@ -1,9 +1,7 @@
 import { IProduct } from '@/types'
 import { create } from 'zustand'
 
-interface ICart extends IProduct {
-	quantity: number
-}
+interface ICart extends IProduct {}
 
 interface ICartStore {
 	carts: ICart[]

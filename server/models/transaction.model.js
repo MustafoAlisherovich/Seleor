@@ -2,17 +2,22 @@ const { Schema, model } = require('mongoose')
 
 const transactionSchema = new Schema(
 	{
-		id: { type: String },
-		user: { type: Schema.Types.ObjectId, ref: 'User' },
-		product: { type: Schema.Types.ObjectId, ref: 'Product' },
-		state: { type: Number },
-		amount: { type: Number },
-		create_time: { type: Number, default: Date.now() },
-		perform_time: { type: Number, default: 0 },
-		cancel_time: { type: Number, default: 0 },
-		reason: { type: Number, default: null },
-		provider: { type: String },
-		prepare_id: { type: String },
+		user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+		products: [
+			{
+				product: {
+					type: Schema.Types.ObjectId,
+					ref: 'Product',
+					required: true,
+				},
+				quantity: { type: Number, required: true },
+			},
+		],
+		amount: { type: Number, required: true },
+		state: { type: Number, default: 1 },
+		provider: { type: String, default: 'stripe' },
+		stripeSessionId: { type: String, required: true },
+		stripePaymentIntentId: { type: String },
 	},
 	{ timestamps: true }
 )

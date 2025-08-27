@@ -5,17 +5,8 @@ const userModel = require('../models/user.model')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 class AdminController {
-	constructor() {
-		this.userId = '689efa151051c1578aeb243e'
-		this.createProduct = this.createProduct.bind(this)
-		this.updateProduct = this.updateProduct.bind(this)
-		this.getProducts = this.getProducts.bind(this)
-		this.deleteProduct = this.deleteProduct.bind(this)
-		this.getCustomers = this.getCustomers.bind(this)
-		this.getOrders = this.getOrders.bind(this)
-		this.getTransactions = this.getTransactions.bind(this)
-		this.updateOrder = this.updateOrder.bind(this)
-	}
+	constructor() {}
+
 	// [GET] /admin/porudcts
 	async getProducts(req, res, next) {
 		try {
@@ -90,6 +81,12 @@ class AdminController {
 				{ $addFields: { orderCount: { $size: '$orders' } } },
 				{ $unwind: { path: '$orders', preserveNullAndEmptyArrays: true } },
 				{
+					$unwind: {
+						path: '$orders.products',
+						preserveNullAndEmptyArrays: true,
+					},
+				},
+				{
 					$group: {
 						_id: '$_id',
 						email: { $first: '$email' },
@@ -97,15 +94,24 @@ class AdminController {
 						role: { $first: '$role' },
 						createdAt: { $first: '$createdAt' },
 						updatedAt: { $first: '$updatedAt' },
-						totalPrice: { $sum: '$orders.price' },
 						orderCount: { $first: '$orderCount' },
 						isDeleted: { $first: '$isDeleted' },
+						totalPrice: {
+							$sum: {
+								$multiply: [
+									{ $ifNull: ['$orders.products.price', 0] },
+									{ $ifNull: ['$orders.products.quantity', 0] },
+								],
+							},
+						},
 					},
 				},
 				{ $sort: sortOptions },
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
 			])
+
+			console.log(customers)
 
 			const totalCustomers = await userModel.countDocuments(query)
 			const isNext = totalCustomers > skipAmount + +customers.length
@@ -131,7 +137,7 @@ class AdminController {
 				query.$or = [
 					{ 'user.fullName': { $regex: new RegExp(escapedSearchQuery, 'i') } },
 					{ 'user.email': { $regex: new RegExp(escapedSearchQuery, 'i') } },
-					{ 'product.title': { $regex: new RegExp(escapedSearchQuery, 'i') } },
+					{ 'products.title': { $regex: new RegExp(escapedSearchQuery, 'i') } },
 				]
 			}
 
@@ -149,27 +155,57 @@ class AdminController {
 					},
 				},
 				{ $unwind: '$user' },
+
 				{
 					$lookup: {
 						from: 'products',
-						localField: 'product',
+						localField: 'products.product',
 						foreignField: '_id',
-						as: 'product',
+						as: 'productDocs',
 					},
 				},
-				{ $unwind: '$product' },
+
+				{
+					$addFields: {
+						products: {
+							$map: {
+								input: '$products',
+								as: 'p',
+								in: {
+									quantity: '$$p.quantity',
+									product: {
+										$arrayElemAt: [
+											{
+												$filter: {
+													input: '$productDocs',
+													as: 'doc',
+													cond: { $eq: ['$$doc._id', '$$p.product'] },
+												},
+											},
+											0,
+										],
+									},
+								},
+							},
+						},
+					},
+				},
+
+				{ $project: { productDocs: 0 } },
+
 				{ $match: query },
 				{ $sort: sortOptions },
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
+
 				{
 					$project: {
-						'user.email': 1,
 						'user.fullName': 1,
-						'product.title': 1,
+						'user.email': 1,
+						products: 1,
+						status: 1,
 						price: 1,
 						createdAt: 1,
-						status: 1,
 					},
 				},
 			])
@@ -186,9 +222,10 @@ class AdminController {
 	// [GET] /admin/transactions
 	async getTransactions(req, res, next) {
 		try {
-			const { searchQuery, filter, page, pageSize } = req.query
+			const { searchQuery, filter, page = 1, pageSize = 10 } = req.query
 			const skipAmount = (+page - 1) * +pageSize
-			const query = {}
+
+			let query = {}
 
 			if (searchQuery) {
 				const escapedSearchQuery = searchQuery.replace(
@@ -196,15 +233,19 @@ class AdminController {
 					'\\$&'
 				)
 				query.$or = [
-					{ 'user.fullName': { $regex: new RegExp(escapedSearchQuery, 'i') } },
+					{
+						'usproductModeler.fullName': {
+							$regex: new RegExp(escapedSearchQuery, 'i'),
+						},
+					},
 					{ 'user.email': { $regex: new RegExp(escapedSearchQuery, 'i') } },
 					{ 'product.title': { $regex: new RegExp(escapedSearchQuery, 'i') } },
 				]
 			}
 
 			let sortOptions = { createdAt: -1 }
-			if (filter === 'newest') sortOptions = { createdAt: -1 }
-			else if (filter === 'oldest') sortOptions = { createdAt: 1 }
+			if (filter === 'oldest') sortOptions = { createdAt: 1 }
+
 			const transactions = await transactionModel.aggregate([
 				{
 					$lookup: {
@@ -215,40 +256,53 @@ class AdminController {
 					},
 				},
 				{ $unwind: '$user' },
+
+				{
+					$unwind: '$products',
+				},
 				{
 					$lookup: {
 						from: 'products',
-						localField: 'product',
+						localField: 'products.product',
 						foreignField: '_id',
-						as: 'product',
+						as: 'productDetails',
 					},
 				},
-				{ $unwind: '$product' },
-				{ $match: query },
+				{ $unwind: '$productDetails' },
+
+				{
+					$group: {
+						_id: '$_id',
+						user: {
+							$first: { fullName: '$user.fullName', email: '$user.email' },
+						},
+						provider: { $first: '$provider' },
+						state: { $first: '$state' },
+						amount: { $first: '$amount' },
+						createdAt: { $first: '$createdAt' },
+						products: {
+							$push: {
+								title: '$productDetails.title',
+								price: '$productDetails.price',
+								quantity: '$products.quantity',
+							},
+						},
+					},
+				},
+
+				query.$or ? { $match: query } : { $match: {} },
+
 				{ $sort: sortOptions },
 				{ $skip: skipAmount },
-				{ $limit: +pageSize },
-				{
-					$project: {
-						'user.email': 1,
-						'user.fullName': 1,
-						'product.title': 1,
-						'product.price': 1,
-						amount: 1,
-						createdAt: 1,
-						state: 1,
-						provider: 1,
-					},
-				},
+				{ $limit: Number(pageSize) },
 			])
 
-			const totalTransactions = await transactionModel.find(query)
+			console.log(JSON.stringify(transactions, null, 2))
+
+			const totalTransactions = await transactionModel.countDocuments(query)
 			const isNext = totalTransactions > skipAmount + +transactions.length
 
-			return res.json({
-				transactions,
-				isNext,
-			})
+			return res.json({ transactions, isNext })
 		} catch (error) {
 			next(error)
 		}
@@ -351,7 +405,6 @@ class AdminController {
 			await productModel.findByIdAndDelete(id)
 			return res.json({ status: 200 })
 		} catch (error) {
-			console.log(error)
 			next(error)
 		}
 	}

@@ -13,7 +13,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, getStatusText, getStatusVariant } from '@/lib/utils'
 import { SearchParams } from '@/types'
 
 interface Props {
@@ -35,7 +35,7 @@ const Page = async (props: Props) => {
 		<>
 			<div className='flex justify-between items-center w-full'>
 				<h1 className='text-xl font-bold'>Payments</h1>
-				<Filter />
+				<Filter showSearch />
 			</div>
 
 			<Separator className='my-3' />
@@ -65,9 +65,20 @@ const Page = async (props: Props) => {
 					{transactions &&
 						transactions.map(transaction => (
 							<TableRow key={transaction._id}>
-								<TableCell>{transaction.product.title}</TableCell>
+								<TableCell>
+									{transaction.products.map((item, i) => (
+										<div key={i}>
+											{item.title}{' '}
+											<span className='text-primary'>x {item.quantity}</span>
+										</div>
+									))}
+								</TableCell>
 								<TableCell>{transaction.user.email}</TableCell>
-								<TableCell>{transaction.state}</TableCell>
+								<TableCell>
+									<Badge variant={getStatusVariant(transaction.state)}>
+										{getStatusText(transaction.state)}
+									</Badge>
+								</TableCell>
 								<TableCell>{transaction.provider}</TableCell>
 								<TableCell className='text-right'>
 									<Badge variant={'secondary'}>

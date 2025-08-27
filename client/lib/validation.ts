@@ -92,6 +92,11 @@ export const cartSchema = z.object({
 		z.object({
 			productId: z.string(),
 			quantity: z.number().min(1),
+			price: z.number(),
 		})
 	),
+})
+
+export const sessionIdSchema = z.object({
+	sessionId: z.string(),
 })

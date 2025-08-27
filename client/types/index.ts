@@ -16,6 +16,7 @@ export interface IProduct {
 	description: string
 	imageKey: string
 	_id: string
+	quantity: number
 }
 
 export interface QueryProps {
@@ -61,7 +62,10 @@ export interface IUser {
 export interface IOrder {
 	_id: string
 	user: IUser
-	product: IProduct
+	products: {
+		quantity: number
+		product: IProduct
+	}[]
 	createdAt: Date
 	price: number
 	status: string
@@ -72,7 +76,7 @@ export interface ITransaction {
 	_id: string
 	id: string
 	user: IUser
-	product: IProduct
+	products: IProduct[]
 	state: number
 	amount: number
 	create_time: number

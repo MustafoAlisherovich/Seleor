@@ -22,6 +22,7 @@ function WishlistCard({ product }: Props) {
 		if (res?.serverError || res?.validationErrors || !res?.data) {
 			return onError('Something went wrong')
 		}
+
 		if (res.data.failure) {
 			return onError(res.data.failure)
 		}
@@ -32,31 +33,32 @@ function WishlistCard({ product }: Props) {
 	}
 
 	return (
-		<div className='border relative flex flex-col'>
-			<div className='bg-secondary relative'>
+		<div className='relative flex flex-col'>
+			<div className='bg-secondary relative group rounded-2xl shadow-md overflow-hidden'>
 				<Image
 					src={product.image!}
-					width={200}
-					height={200}
-					className='mx-auto'
+					width={300}
+					height={300}
+					className='mx-auto object-cover transition-transform duration-300 group-hover:scale-105'
 					alt={product.title!}
 				/>
-				<Button
-					size={'icon'}
-					className='absolute right-0 top-0 z-50 flex items-center'
-					disabled={isLoading}
-					onClick={onDelete}
-				>
-					<Heart className='text-red-500 fill-red-500' />
-				</Button>
+				{/* Favorite button */}
+				<div className='absolute right-3 top-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity'>
+					<Button
+						size='icon'
+						className='cursor-pointer rounded-full bg-white shadow-md hover:bg-red-400 bg-red-500'
+						disabled={isLoading}
+						onClick={onDelete}
+					>
+						<Heart className='w-5 h-5 ' />
+					</Button>
+				</div>
 			</div>
 
-			<div className='p-2'>
-				<div className='flex justify-between items-center text-sm'>
-					<h1 className='font-bold'>{product.title}</h1>
-					<p className='font-medium'>{formatPrice(+product.price!)}</p>
-				</div>
-				<p className='text-xs text-muted-foreground'>{product.description}</p>
+			{/* Title & Price */}
+			<div className='flex justify-between items-center mt-3 text-sm'>
+				<h1 className='font-semibold line-clamp-1'>{product.title}</h1>
+				<p className='font-bold text-primary'>{formatPrice(product.price!)}</p>
 			</div>
 		</div>
 	)

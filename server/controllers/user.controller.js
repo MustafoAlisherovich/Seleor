@@ -80,7 +80,11 @@ class UserController {
 					'\\$&'
 				)
 				matchQuery.$or = [
-					{ 'product.title': { $regex: new RegExp(escapedSearchQuery, 'i') } },
+					{
+						'products.product.title': {
+							$regex: new RegExp(escapedSearchQuery, 'i'),
+						},
+					},
 				]
 			}
 
@@ -92,26 +96,81 @@ class UserController {
 				{
 					$lookup: {
 						from: 'products',
-						localField: 'product',
+						localField: 'products.product',
 						foreignField: '_id',
-						as: 'product',
+						as: 'productDocs',
 					},
 				},
-				{ $unwind: '$product' },
+				{
+					$addFields: {
+						products: {
+							$map: {
+								input: '$products',
+								as: 'p',
+								in: {
+									quantity: '$$p.quantity',
+									product: {
+										$arrayElemAt: [
+											{
+												$filter: {
+													input: '$productDocs',
+													as: 'doc',
+													cond: { $eq: ['$$doc._id', '$$p.product'] },
+												},
+											},
+											0,
+										],
+									},
+								},
+							},
+						},
+					},
+				},
+				{
+					$addFields: {
+						totalPrice: {
+							$sum: {
+								$map: {
+									input: '$products',
+									as: 'p',
+									in: {
+										$multiply: [
+											{ $ifNull: ['$$p.quantity', 0] },
+											{ $ifNull: ['$$p.product.price', 0] },
+										],
+									},
+								},
+							},
+						},
+						combinedTitles: {
+							$reduce: {
+								input: {
+									$map: {
+										input: '$products',
+										as: 'p',
+										in: '$$p.product.title',
+									},
+								},
+								initialValue: '',
+								in: {
+									$cond: [
+										{ $eq: ['$$value', ''] },
+										'$$this',
+										{ $concat: ['$$value', ', ', '$$this'] },
+									],
+								},
+							},
+						},
+					},
+				},
+				{ $project: { productDocs: 0 } },
 				{ $match: matchQuery },
 				{ $sort: sortOptions },
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
-				{
-					$project: {
-						'product.title': 1,
-						createdAt: 1,
-						updatedAt: 1,
-						price: 1,
-						status: 1,
-					},
-				},
 			])
+
+			console.log(orders)
 
 			const totalOrders = await orderModel.countDocuments(matchQuery)
 			const isNext = totalOrders > skipAmount + orders.length
@@ -121,56 +180,60 @@ class UserController {
 			next(error)
 		}
 	}
-	// [GET] /user/transactions
+
+	// [GET] /user/entransactions
 	async getTransactions(req, res, next) {
 		try {
 			const currentUser = req.user
-			const { searchQuery, filter, page, pageSize } = req.query
+			const { filter, page, pageSize } = req.query
 			const skipAmount = (page - 1) * pageSize
 
 			const matchQuery = { user: currentUser._id }
-
-			if (searchQuery) {
-				const escapedSearchQuery = searchQuery.replace(
-					/[.*+?^${}()|[\]\\]/g,
-					'\\$&'
-				)
-				matchQuery.$or = [
-					{ 'product.title': { $regex: new RegExp(escapedSearchQuery, 'i') } },
-				]
-			}
 
 			let sortOptions = { createdAt: -1 }
 			if (filter === 'newest') sortOptions = { createdAt: -1 }
 			else if (filter === 'oldest') sortOptions = { createdAt: 1 }
 
 			const transactions = await transactionModel.aggregate([
+				{ $match: matchQuery },
+
+				{ $unwind: '$products' },
+
 				{
 					$lookup: {
 						from: 'products',
-						localField: 'product',
+						localField: 'products.product',
 						foreignField: '_id',
-						as: 'product',
+						as: 'productDoc',
 					},
 				},
-				{ $unwind: '$product' },
-				{ $match: matchQuery },
+
+				{ $unwind: '$productDoc' },
+
+				{
+					$group: {
+						_id: '$_id',
+						provider: { $first: '$provider' },
+						state: { $first: '$state' },
+						amount: { $first: '$amount' },
+						createdAt: { $first: '$createdAt' },
+						products: {
+							$push: {
+								title: '$productDoc.title',
+								quantity: '$products.quantity',
+								image: '$productDoc.image',
+							},
+						},
+					},
+				},
+
 				{ $sort: sortOptions },
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
-				{
-					$project: {
-						'product.title': 1,
-						amount: 1,
-						state: 1,
-						create_time: 1,
-						perform_time: 1,
-						cancel_time: 1,
-						reason: 1,
-						provider: 1,
-					},
-				},
 			])
+
+			console.log(JSON.stringify(transactions, null, 2))
+
 			const totalTransactions = await transactionModel.countDocuments(
 				matchQuery
 			)
@@ -287,11 +350,17 @@ class UserController {
 				mode: 'payment',
 				metadata: {
 					userId: currentUser._id.toString(),
-					cart: JSON.stringify(cart), // butun cartni metadata’da saqlash mumkin
+					cart: JSON.stringify(cart),
 				},
 				line_items,
 				success_url: `${process.env.CLIENT_URL}/success?userId=${currentUser._id}`,
 				cancel_url: `${process.env.CLIENT_URL}/cancel?userId=${currentUser._id}`,
+				payment_intent_data: {
+					metadata: {
+						userId: currentUser._id.toString(),
+						cart: JSON.stringify(cart),
+					},
+				},
 			})
 
 			return res.json({ status: 200, checkoutUrl: session.url })

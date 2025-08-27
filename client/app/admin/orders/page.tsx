@@ -36,7 +36,7 @@ const Page: FC<Props> = async props => {
 		<>
 			<div className='flex justify-between items-center w-full'>
 				<h1 className='text-xl font-bold'>Orders</h1>
-				<Filter />
+				<Filter showSearch />
 			</div>
 
 			<Separator className='my-3' />
@@ -47,9 +47,9 @@ const Page: FC<Props> = async props => {
 				)}
 				<TableHeader>
 					<TableRow>
-						<TableHead>Product</TableHead>
+						<TableHead>Products</TableHead>
 						<TableHead>Customer</TableHead>
-						<TableHead>Price</TableHead>
+						<TableHead>Total Price</TableHead>
 						<TableHead>Status</TableHead>
 						<TableHead>Created at</TableHead>
 						<TableHead className='text-right'>Actions</TableHead>
@@ -66,19 +66,42 @@ const Page: FC<Props> = async props => {
 					{orders &&
 						orders.map(order => (
 							<TableRow key={order._id}>
-								<TableCell>{order.product.title}</TableCell>
-								<TableCell>{order.user.email}</TableCell>
+								{/* Products */}
 								<TableCell>
-									<Badge variant={'secondary'}>
-										{formatPrice(order.price)}
+									{order.products.map((item, i) => (
+										<div key={i}>
+											{item.product.title}{' '}
+											<span className='text-primary'>x {item.quantity}</span>
+										</div>
+									))}
+								</TableCell>
+
+								{/* Customer */}
+								<TableCell>{order.user?.email}</TableCell>
+
+								{/* Total Price */}
+								<TableCell>
+									<Badge variant='secondary'>
+										{formatPrice(
+											order.products.reduce(
+												(total, p) => total + p.product.price * p.quantity,
+												0
+											)
+										)}
 									</Badge>
 								</TableCell>
+
+								{/* Status */}
 								<TableCell>
 									<Badge>{order.status}</Badge>
 								</TableCell>
+
+								{/* Created At */}
 								<TableCell>
 									{format(new Date(order.createdAt), 'dd/MM/yyyy')}
 								</TableCell>
+
+								{/* Actions */}
 								<TableCell className='text-right'>
 									<OrderActions />
 								</TableCell>
