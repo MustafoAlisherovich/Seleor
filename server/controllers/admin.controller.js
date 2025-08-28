@@ -2,6 +2,7 @@ const orderModel = require('../models/order.model')
 const productModel = require('../models/product.model')
 const transactionModel = require('../models/transaction.model')
 const userModel = require('../models/user.model')
+const mailService = require('../services/mail.service')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 class AdminController {
@@ -110,8 +111,6 @@ class AdminController {
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
 			])
-
-			console.log(customers)
 
 			const totalCustomers = await userModel.countDocuments(query)
 			const isNext = totalCustomers > skipAmount + +customers.length
@@ -297,8 +296,6 @@ class AdminController {
 				{ $limit: Number(pageSize) },
 			])
 
-			console.log(JSON.stringify(transactions, null, 2))
-
 			const totalTransactions = await transactionModel.countDocuments(query)
 			const isNext = totalTransactions > skipAmount + +transactions.length
 
@@ -313,13 +310,35 @@ class AdminController {
 		try {
 			const { id } = req.params
 			const { status } = req.body
-			const userId = this.userId
-			const user = await userModel.findById(userId)
-			if (!user) return res.json({ message: 'User not found' })
-			if (user.role !== 'admin') return res.json({ message: 'User not admin' })
-			const updatedOrder = await orderModel.findByIdAndUpdate(id, { status })
-			if (!updatedOrder) return res.json({ message: 'Order update failed' })
-			return res.json({ message: 'Order updated successfully' })
+
+			const updatedOrder = await orderModel
+				.findByIdAndUpdate(id, { status }, { new: true })
+				.populate({
+					path: 'user',
+					select: 'email fullName',
+				})
+				.populate({
+					path: 'products.product',
+					select: 'title image price',
+				})
+
+			if (!updatedOrder) {
+				return res.json({ message: 'Order update failed' })
+			}
+
+			const products = updatedOrder.products.map(p => ({
+				title: p.product?.title || '',
+				image: p.product?.image || '',
+				price: Number(p.product?.price) || 0,
+			}))
+
+			await mailService.sendUpdateMail({
+				user: updatedOrder.user,
+				products,
+				status: updatedOrder.status,
+			})
+
+			return res.json({ status: 200 })
 		} catch (error) {
 			next(error)
 		}
@@ -362,7 +381,6 @@ class AdminController {
 
 			return res.json({ status: 201 })
 		} catch (error) {
-			console.log(error)
 			next(error)
 		}
 	}

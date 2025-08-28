@@ -8,6 +8,7 @@ import {
 	productSchema,
 	searchParamsSchema,
 	updateProductSchema,
+	updateStatusSchema,
 } from '@/lib/validation'
 import { ReturnActionType } from '@/types'
 import { getServerSession } from 'next-auth'
@@ -113,6 +114,24 @@ export const updateProduct = actionClient
 			{ headers: { Authorization: `Bearer ${token}` } }
 		)
 		revalidatePath('/admin/products')
+		return JSON.parse(JSON.stringify(data))
+	})
+
+export const updateOrder = actionClient
+	.schema(updateStatusSchema)
+	.action<ReturnActionType>(async ({ parsedInput }) => {
+		const session = await getServerSession(authOptions)
+		if (!session?.currentUser?._id) {
+			throw new Error('User ID is required to generate token')
+		}
+		const token = await generateToken(session.currentUser._id)
+		const { id, status } = parsedInput
+		const { data } = await axiosClient.put(
+			`/api/admin/update-order/${id}`,
+			{ status },
+			{ headers: { Authorization: `Bearer ${token}` } }
+		)
+		revalidatePath('/admin/orders')
 		return JSON.parse(JSON.stringify(data))
 	})
 

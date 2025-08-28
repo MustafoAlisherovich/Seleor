@@ -103,7 +103,7 @@ const Page: FC<Props> = async props => {
 
 								{/* Actions */}
 								<TableCell className='text-right'>
-									<OrderActions />
+									<OrderActions order={order} />
 								</TableCell>
 							</TableRow>
 						))}

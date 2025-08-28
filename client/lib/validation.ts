@@ -100,3 +100,7 @@ export const cartSchema = z.object({
 export const sessionIdSchema = z.object({
 	sessionId: z.string(),
 })
+
+export const updateStatusSchema = z
+	.object({ status: z.string() })
+	.merge(idSchema)

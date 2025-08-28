@@ -10,6 +10,18 @@ interface Props {
 	params: Params
 }
 
+export async function generateMetadata({ params }: Props) {
+	const { productId } = await params
+	const res = await getProduct({ id: productId })
+	const product = res?.data?.product
+
+	return {
+		title: product?.title,
+		description: product?.description,
+		openGrap: { images: product?.image },
+	}
+}
+
 async function Page({ params }: Props) {
 	const { productId } = await params
 

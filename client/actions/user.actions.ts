@@ -133,7 +133,7 @@ export const updateUser = actionClient
 	.action<ReturnActionType>(async ({ parsedInput }) => {
 		const session = await getServerSession(authOptions)
 		if (!session?.currentUser)
-			return { failure: 'You must be logged in to add a favorite' }
+			return { failure: 'You must be logged in to update your profile' }
 		const token = await generateToken(session?.currentUser?._id)
 		const { data } = await axiosClient.put(
 			'/api/user/update-profile',
@@ -149,7 +149,7 @@ export const updatePassword = actionClient
 	.action<ReturnActionType>(async ({ parsedInput }) => {
 		const session = await getServerSession(authOptions)
 		if (!session?.currentUser)
-			return { failure: 'You must be logged in to add a favorite' }
+			return { failure: 'You must be logged in to update your password' }
 		const token = await generateToken(session?.currentUser?._id)
 		const { data } = await axiosClient.put(
 			'/api/user/update-password',
@@ -164,7 +164,7 @@ export const deleteFavorite = actionClient
 	.action<ReturnActionType>(async ({ parsedInput }) => {
 		const session = await getServerSession(authOptions)
 		if (!session?.currentUser)
-			return { failure: 'You must be logged in to add a favorite' }
+			return { failure: 'You must be logged in to delete a favorite' }
 		const token = await generateToken(session?.currentUser?._id)
 		const { data } = await axiosClient.delete(
 			`/api/user/delete-favorite/${parsedInput.id}`,

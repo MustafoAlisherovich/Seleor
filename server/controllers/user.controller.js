@@ -170,8 +170,6 @@ class UserController {
 				{ $limit: +pageSize },
 			])
 
-			console.log(orders)
-
 			const totalOrders = await orderModel.countDocuments(matchQuery)
 			const isNext = totalOrders > skipAmount + orders.length
 
@@ -231,8 +229,6 @@ class UserController {
 				{ $skip: skipAmount },
 				{ $limit: +pageSize },
 			])
-
-			console.log(JSON.stringify(transactions, null, 2))
 
 			const totalTransactions = await transactionModel.countDocuments(
 				matchQuery

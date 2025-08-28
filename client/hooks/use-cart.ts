@@ -11,7 +11,6 @@ interface ICartStore {
 	decrement: (id: string) => void
 	totalPrice: () => number
 	cartsLength: () => number
-	taxes: () => number
 	clearCart: () => void
 }
 
@@ -70,6 +69,5 @@ export const useCart = create<ICartStore>((set, get) => ({
 	cartsLength: () => {
 		return get().carts.reduce((acc, cart) => acc + cart.quantity, 0)
 	},
-	taxes: () => get().totalPrice() * 0.1,
 	clearCart: () => set({ carts: [] }),
 }))

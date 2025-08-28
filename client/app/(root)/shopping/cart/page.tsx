@@ -11,7 +11,7 @@ import ShoppingCartCard from './_components/shoppin-cart.card'
 
 function Cart() {
 	const { isLoading, setIsLoading, onError } = UseAction()
-	const { carts, totalPrice, taxes } = useCart()
+	const { carts, totalPrice } = useCart()
 
 	const onStripe = async () => {
 		setIsLoading(true)
@@ -73,23 +73,13 @@ function Cart() {
 						<CardContent className='py-4'>
 							<h1 className='font-space-grotesk text-2xl font-bold'>Results</h1>
 							<p className='text-sm text-muted-foreground'>
-								"Control the items in your cart."
+								Control the items in your cart.
 							</p>
 
 							<Separator className='my-3' />
 
 							<div className='flex items-center justify-between text-sm'>
-								<div className='font-space-grotesk font-bold'>Subtotal</div>
-								<div className='font-medium'>
-									{totalPrice().toLocaleString('en-US', {
-										style: 'currency',
-										currency: 'USD',
-									})}
-								</div>
-							</div>
-
-							<div className='flex items-center justify-between text-sm'>
-								<div className='font-space-grotesk font-bold'>Total</div>
+								<div className='font-space-grotesk font-bold'>Price</div>
 								<div className='font-medium'>
 									{totalPrice().toLocaleString('en-US', {
 										style: 'currency',
@@ -100,7 +90,7 @@ function Cart() {
 
 							{carts.length ? (
 								<Button
-									className='group mt-3 flex w-full items-center justify-between px-2 font-space-grotesk font-bold'
+									className='group mt-3 flex w-full items-center justify-between px-2 font-space-grotesk font-bold cursor-pointer'
 									size={'lg'}
 									disabled={isLoading}
 									onClick={onStripe}
