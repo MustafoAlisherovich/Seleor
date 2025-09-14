@@ -11,7 +11,7 @@ function Sidebar() {
 	const pathname = usePathname()
 
 	return (
-		<div className='fixed inset-0 mt-[10vh] h-[90vh] w-[300px] max-md:w-24 p-4 shadow-md'>
+		<div className='fixed inset-0 mt-[8vh] h-[90vh] w-[300px] max-md:w-24 p-4'>
 			<div className='mt-6 px-4 max-md:px-2'>
 				<h1 className='font-semibold text-xl'>Admin</h1>
 				<Separator className='my-3' />

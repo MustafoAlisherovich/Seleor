@@ -1,23 +1,24 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/hooks/use-cart'
 import { IProduct } from '@/types'
 import { ArrowBigDownDash, ArrowBigUpDash, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 
-interface Props extends IProduct {
-	quantity: number
-}
+interface Props extends IProduct {}
+
 function ShoppingCartCard(item: Props) {
-	const { removeFromCart, totalPrice, increment, decrement } = useCart()
+	const { removeFromCart, increment, decrement } = useCart()
 
 	return (
-		<div className='grid w-full grid-cols-3 gap-4 rounded-md p-4 shadow-md dark:shadow-sm dark:shadow-white max-md:grid-cols-1'>
-			<div className='col-span-2 flex items-center gap-2'>
+		<div className='grid w-full grid-cols-1 md:grid-cols-3 gap-4 rounded-md p-4 shadow-md dark:shadow-sm dark:shadow-white'>
+			<div className='flex items-center gap-2 md:col-span-2'>
 				<Image
 					src={item.image}
 					alt={item.title}
-					width={150}
-					height={100}
+					width={120}
+					height={90}
 					className='rounded-sm object-cover'
 				/>
 				<div className='flex flex-col'>
@@ -34,7 +35,7 @@ function ShoppingCartCard(item: Props) {
 				</div>
 			</div>
 
-			<div className='flex items-center justify-end gap-2'>
+			<div className='flex flex-col md:flex-row md:items-center md:justify-end gap-3'>
 				<div className='flex items-center gap-1'>
 					<h1 className='font-space-grotesk text-xl font-bold'>
 						{item.quantity}
@@ -56,19 +57,20 @@ function ShoppingCartCard(item: Props) {
 						/>
 					</div>
 				</div>
-				<h1 className='font-space-grotesk text-xl font-bold max-md:hidden'>
+
+				<h1 className='font-space-grotesk text-xl font-bold hidden md:block'>
 					{(item.price * item.quantity).toLocaleString('en-US', {
 						style: 'currency',
 						currency: 'USD',
 					})}
 				</h1>
+
 				<Button
-					variant={'destructive'}
-					size={'icon'}
-					className='max-md:w-full cursor-pointer'
+					size='icon'
+					className='w-full md:w-auto cursor-pointer bg-red-500 md:bg-secondary md:hover:bg-secondary/90'
 					onClick={() => removeFromCart(item._id)}
 				>
-					<Trash2 className='size-5' />
+					<Trash2 className='size-5 md:text-red-500' />
 				</Button>
 			</div>
 		</div>

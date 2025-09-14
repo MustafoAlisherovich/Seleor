@@ -5,24 +5,31 @@ import { ChildProps } from '@/types'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import NextTopLoader from 'nextjs-toploader'
+
+import { Suspense } from 'react'
 import './globals.css'
+
 const montserrat = Montserrat({
 	weight: ['400', '500', '600', '700', '800', '900'],
 	subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-	title: 'Seleor e-commerce',
-	description: 'Seleor e-commerce build with nextJS',
-	icons: { icon: '/favicon.png' },
+	title: 'e-commerce',
+	description: 'e-commerce build with nextJS',
+	icons: { icon: '/logo.svg' },
 }
 
 export default function RootLayout({ children }: ChildProps) {
 	return (
 		<SessionProvider>
 			<html lang='en'>
-				<body className={`${montserrat.className} antialiased`}>
-					<Navbar />
+				<body
+					className={`${montserrat.className} antialiased custom-scrollbar`}
+				>
+					<Suspense fallback={null}>
+						<Navbar />
+					</Suspense>
 					<NextTopLoader
 						color='#007aff'
 						initialPosition={0.5}

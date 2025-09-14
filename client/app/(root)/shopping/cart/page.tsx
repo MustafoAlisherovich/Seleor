@@ -40,11 +40,12 @@ function Cart() {
 	}
 
 	return (
-		<div className='container mx-auto py-20 max-w-7xl'>
-			<div className='grid grid-cols-3 gap-2 max-md:grid-cols-1'>
-				<Card className='col-span-2 bg-gradient-to-t from-secondary to-background'>
+		<div className='container mx-auto py-20 max-w-7xl px-4'>
+			<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+				{/* Shopping Cart */}
+				<Card className='lg:col-span-2 bg-gradient-to-t from-secondary to-background'>
 					<CardContent className='py-4'>
-						{carts.length > 0 && (
+						{carts.length > 0 ? (
 							<>
 								<h1 className='font-space-grotesk text-2xl font-bold'>
 									Shopping Cart
@@ -53,11 +54,12 @@ function Cart() {
 									You have {carts.length} products in your cart.
 								</p>
 							</>
-						)}
-						{carts.length === 0 && (
-							<p className='mb-4 text-center text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white'>
-								Products Not Found
-							</p>
+						) : (
+							<div className='flex items-center justify-center mt-6'>
+								<p className='mb-4 text-center text-2xl md:text-4xl tracking-tight font-bold text-gray-900 dark:text-white'>
+									Products Not Found
+								</p>
+							</div>
 						)}
 
 						<div className='my-3 flex flex-col space-y-3'>
@@ -68,6 +70,7 @@ function Cart() {
 					</CardContent>
 				</Card>
 
+				{/* Results */}
 				<div>
 					<Card className='bg-gradient-to-t from-secondary to-background'>
 						<CardContent className='py-4'>
@@ -91,7 +94,7 @@ function Cart() {
 							{carts.length ? (
 								<Button
 									className='group mt-3 flex w-full items-center justify-between px-2 font-space-grotesk font-bold cursor-pointer'
-									size={'lg'}
+									size='lg'
 									disabled={isLoading}
 									onClick={onStripe}
 								>

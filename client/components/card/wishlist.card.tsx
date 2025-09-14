@@ -6,6 +6,7 @@ import { formatPrice } from '@/lib/utils'
 import { IProduct } from '@/types'
 import { Heart } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
@@ -33,33 +34,40 @@ function WishlistCard({ product }: Props) {
 	}
 
 	return (
-		<div className='relative flex flex-col'>
-			<div className='bg-secondary relative group rounded-2xl shadow-md overflow-hidden'>
-				<Image
-					src={product.image!}
-					width={300}
-					height={300}
-					className='mx-auto object-cover transition-transform duration-300 group-hover:scale-105'
-					alt={product.title!}
-				/>
-				{/* Favorite button */}
-				<div className='absolute right-3 top-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity'>
+		<div className='relative group rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden min-h-[220px] sm:min-h-[250px] flex flex-col'>
+			<div className='relative w-full h-40 sm:h-56 flex items-center justify-center bg-white'>
+				<Link href={`/product/${product._id}`}>
+					<Image
+						src={product.image!}
+						width={160}
+						height={160}
+						className='object-contain transition-transform duration-300 group-hover:scale-105 max-h-[140px] sm:max-h-[200px]'
+						alt={product.title!}
+					/>
+				</Link>
+				<div className='absolute right-2 top-2 sm:right-3 sm:top-3 z-10 transition-opacity'>
 					<Button
 						size='icon'
-						className='cursor-pointer rounded-full bg-white shadow-md hover:bg-red-400 bg-red-500'
+						className='cursor-pointer rounded-full bg-red-500 shadow-md hover:bg-red-400'
 						disabled={isLoading}
 						onClick={onDelete}
 					>
-						<Heart className='w-5 h-5 ' />
+						<Heart className='size-4 sm:size-4' />
 					</Button>
 				</div>
 			</div>
 
 			{/* Title & Price */}
-			<div className='flex justify-between items-center mt-3 text-sm'>
-				<h1 className='font-semibold line-clamp-1'>{product.title}</h1>
-				<p className='font-bold text-primary'>{formatPrice(product.price!)}</p>
-			</div>
+			<Link href={`/product/${product._id}`}>
+				<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center px-2 sm:px-3 mt-auto gap-1 sm:gap-2'>
+					<h1 className='font-semibold text-sm sm:text-base line-clamp-1'>
+						{product.title}
+					</h1>
+					<p className='text-sm sm:text-lg font-bold text-primary'>
+						{formatPrice(product.price!)}
+					</p>
+				</div>
+			</Link>
 		</div>
 	)
 }

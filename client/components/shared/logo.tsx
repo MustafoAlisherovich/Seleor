@@ -1,10 +1,11 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 function Logo() {
 	return (
 		<Link href={'/'}>
-			<Image src={'/logo.svg'} alt='logo' width={150} height={50} />
+			<h1 className='text-2xl md:text-3xl font-extrabold tracking-wide text-primary'>
+				E-Commerce
+			</h1>
 		</Link>
 	)
 }

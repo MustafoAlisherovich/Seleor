@@ -11,7 +11,7 @@ type Props = {
 	initialCount: number
 	initialPage: number
 	totalProducts: number
-	initialQuery: string // searchParams.toString()
+	initialQuery: string
 }
 
 export default function LoadMore({
@@ -46,23 +46,21 @@ export default function LoadMore({
 
 	return (
 		<>
-			{/* appended productlar shu grid ichida server-rendered productlardan keyin chiqadi */}
 			{appended.map(product => (
 				<ProductCard key={product._id} product={product} />
 			))}
 
-			{/* Tugma uchun col-span-full yordamida tugma grid ichida qatorni egallaydi */}
 			{currentTotal < totalProducts && (
 				<div className='flex justify-center mt-6 col-span-full'>
 					{loading ? (
 						<Loader2 className='text-primary size-14 animate-spin' />
 					) : (
 						<Button
-							className='w-[40vw] h-[7vh] cursor-pointer'
+							className='w-[40vw] h-[7vh] cursor-pointer border border-gray-300'
 							variant={'secondary'}
 							onClick={handleLoadMore}
 						>
-							<span className='text-[16px] font-semibold'>Read More 12</span>
+							<span className='text-[16px] font-semibold'>Read More 8</span>
 						</Button>
 					)}
 				</div>

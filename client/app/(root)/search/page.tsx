@@ -1,56 +1,34 @@
-'use client'
-
 import { getProducts } from '@/actions/user.actions'
-import ProductCard from '@/components/card/product.card'
 import NotFound from '@/components/shared/not-found'
-import { IProduct } from '@/types'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { SearchParams } from '@/types'
+import SearchProducts from './_components/search-products'
 
-export default function SearchPage() {
-	const searchParams = useSearchParams()
-	const [products, setProducts] = useState<IProduct[]>([])
-	const [isLoading, setIsLoading] = useState(false)
+interface Props {
+	searchParams: SearchParams
+}
 
-	const query = searchParams.get('q') || ''
+export default async function SearchPage(props: Props) {
+	const searchParams = await props.searchParams
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			setIsLoading(true)
-			const res = await getProducts({
-				searchQuery: query,
-			})
+	const res = await getProducts({
+		searchQuery: `${searchParams.q || ''}`,
+		page: '1',
+	})
 
-			if (res?.data) {
-				setProducts(res.data.products)
-			}
-			setIsLoading(false)
-		}
-
-		fetchProducts()
-	}, [query])
+	const products = res?.data?.products || []
 
 	return (
-		<div className='container max-w-7xl mx-auto p-6 py-28'>
+		<div className='container max-w-7xl mx-auto p-6'>
 			<h1 className='text-3xl font-bold mb-8 text-center md:text-left'>
 				Products
 			</h1>
 
-			{!isLoading && products.length === 0 ? (
+			{products.length === 0 ? (
 				<div className='flex flex-col items-center justify-center py-16'>
-					<NotFound />
-					<p className='mt-4 text-gray-500 text-sm'>
-						We couldn’t find any products matching your search.
-					</p>
+					<NotFound showBtn />
 				</div>
 			) : (
-				<>
-					<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
-						{products.map(product => (
-							<ProductCard key={product._id} product={product} />
-						))}
-					</div>
-				</>
+				<SearchProducts products={products} />
 			)}
 		</div>
 	)

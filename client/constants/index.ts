@@ -1,18 +1,35 @@
 import {
 	Banknote,
 	Barcode,
+	Headset,
 	Heart,
 	Settings2,
+	ShieldCheck,
 	Shuffle,
+	Star,
+	Truck,
 	User,
 } from 'lucide-react'
+
+export const categoriesBar = [
+	{ name: 'Shoes' },
+	{ name: 'T-Shirts' },
+	{ name: 'Clothes' },
+	{ name: 'Books' },
+	{ name: 'Accessories' },
+	{ name: 'Electronics' },
+	{ name: 'Health' },
+	{ name: "Children's products" },
+	{ name: 'Sports and recreation' },
+	{ name: 'Pet Products' },
+]
 
 export const products = [
 	{
 		_id: '1',
-		title: 'Product 1',
-		description: 'Description 1',
-		image: '/1.webp',
+		title: 'Welcome to Our Store',
+		description: 'Best products, best prices',
+		image: '/slider1.jpg',
 		category: 'Category 1',
 		price: 10,
 	},
@@ -20,7 +37,7 @@ export const products = [
 		_id: '2',
 		title: 'Product 2',
 		description: 'Description 2',
-		image: '/2.webp',
+		image: '/slider1.jpg',
 		category: 'Category 2',
 		price: 20,
 	},
@@ -28,7 +45,7 @@ export const products = [
 		_id: '3',
 		title: 'Product 3',
 		description: 'Description 3',
-		image: '/3.webp',
+		image: '/slider1.jpg',
 		category: 'Category 3',
 		price: 30,
 	},
@@ -36,7 +53,7 @@ export const products = [
 		_id: '4',
 		title: 'Product 4',
 		description: 'Description 4',
-		image: '/3.webp',
+		image: '/slider1.jpg',
 		category: 'Category 3',
 		price: 30,
 	},
@@ -50,6 +67,29 @@ export const categories = [
 	'Books',
 	'Accessories',
 	'Universal',
+]
+
+export const features = [
+	{
+		title: 'Fast Delivery',
+		desc: 'We ensure your orders arrive quickly and safely to your doorstep.',
+		icon: Truck,
+	},
+	{
+		title: 'Quality Products',
+		desc: 'We only provide genuine and high-quality products you can trust.',
+		icon: Star,
+	},
+	{
+		title: 'Secure Payments',
+		desc: 'All transactions are protected with top-level security.',
+		icon: ShieldCheck,
+	},
+	{
+		title: '24/7 Support',
+		desc: 'Our team is always ready to help you with any questions.',
+		icon: Headset,
+	},
 ]
 
 export const dashboardSidebar = [

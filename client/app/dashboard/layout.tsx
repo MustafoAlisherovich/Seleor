@@ -11,7 +11,7 @@ async function Layout({ children }: ChildProps) {
 	return (
 		<>
 			<Sidebar />
-			<main className='w-full p-4 pl-[320px] pt-[15vh]'>
+			<main className='w-full p-4 pt-8 pl-[320px] max-md:pl-[60px]'>
 				<div className='size-full rounded-md px-4 pb-4 shadow-md'>
 					{children}
 				</div>

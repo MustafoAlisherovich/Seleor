@@ -22,9 +22,9 @@ const Page = async (props: Props) => {
 	const isNext = res?.data?.isNext || false
 	return (
 		<>
-			<div className='flex justify-between items-center w-full'>
-				<h1 className='text-xl font-bold'>Wishlist</h1>
-				<Filter showCategory showSearch />
+			<div className='w-full space-y-3'>
+				<h1 className='text-xl font-bold'>Wishlists</h1>
+				<Filter showSearch />
 			</div>
 
 			<Separator className='my-3' />
@@ -33,7 +33,7 @@ const Page = async (props: Props) => {
 				<div className='text-center mt-3 '>No products found.</div>
 			)}
 
-			<div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-3'>
+			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3'>
 				{products &&
 					products.map(product => (
 						<WishlistCard key={product._id} product={product} />

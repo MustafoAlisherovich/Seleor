@@ -111,7 +111,7 @@ const EmailForm = ({ user }: Props) => {
 						name='email'
 						render={({ field }) => (
 							<FormItem className='space-y-0'>
-								<Label className='text-xs'>Email</Label>
+								<Label className='text-sm md:text-xs'>Email</Label>
 								<FormControl>
 									<Input
 										placeholder='example@gmail.com'
@@ -125,7 +125,11 @@ const EmailForm = ({ user }: Props) => {
 						)}
 					/>
 					{!isVerifying && (
-						<Button type='submit' className='mt-4' disabled={isLoading}>
+						<Button
+							type='submit'
+							className='mt-4 w-full md:w-auto'
+							disabled={isLoading}
+						>
 							Submit {isLoading && <Loader className='animate-spin' />}
 						</Button>
 					)}
@@ -134,14 +138,14 @@ const EmailForm = ({ user }: Props) => {
 
 			{isVerifying && (
 				<Form {...otpForm}>
-					<form onSubmit={otpForm.handleSubmit(onVerify)}>
+					<form onSubmit={otpForm.handleSubmit(onVerify)} className='space-y-3'>
 						<FormField
 							control={otpForm.control}
 							name='otp'
 							render={({ field }) => (
-								<FormItem className='space-y-0 '>
-									<Label>Enter OTP</Label>
-									<FormControl className='w-full'>
+								<FormItem className='space-y-1'>
+									<Label className='text-sm md:text-base'>Enter OTP</Label>
+									<FormControl className='w-full flex justify-center'>
 										<InputOTP maxLength={6} {...field}>
 											<InputOTPGroup>
 												<InputOTPSlot index={0} />
@@ -160,10 +164,11 @@ const EmailForm = ({ user }: Props) => {
 								</FormItem>
 							)}
 						/>
-						<div className='flex items-center gap-1'>
+
+						<div className='flex flex-col md:flex-row items-center gap-2'>
 							<Button
 								type='submit'
-								className='mt-2'
+								className='mt-2 w-full md:w-auto'
 								disabled={isLoading || isResend}
 							>
 								Verify {isLoading && <Loader className='animate-spin' />}
@@ -173,7 +178,7 @@ const EmailForm = ({ user }: Props) => {
 									type='button'
 									onClick={() => onSubmit(form.getValues())}
 									disabled={isLoading}
-									className='mt-2'
+									className='mt-2 w-full md:w-auto'
 								>
 									Resend OTP {isLoading && <Loader className='animate-spin' />}
 								</Button>

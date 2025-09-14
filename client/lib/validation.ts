@@ -75,7 +75,7 @@ export const searchParamsSchema = z.object({
 	filter: z.string().optional(),
 	category: z.string().optional(),
 	page: z.string().default('1'),
-	pageSize: z.string().default('12'),
+	pageSize: z.string().default('8'),
 })
 
 export const updateUserSchema = z.object({
@@ -91,7 +91,7 @@ export const cartSchema = z.object({
 	cart: z.array(
 		z.object({
 			productId: z.string(),
-			quantity: z.number().min(1),
+			quantity: z.number(),
 			price: z.number(),
 		})
 	),

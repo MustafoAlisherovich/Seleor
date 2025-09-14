@@ -35,6 +35,7 @@ function GlobalSearch() {
 		if (value.trim()) {
 			saveToHistory(value.trim())
 			router.push(`/search?q=${encodeURIComponent(value)}`)
+			router.refresh()
 			setShowHistory(false)
 		}
 	}
@@ -83,7 +84,7 @@ function GlobalSearch() {
 					{history.map((item, idx) => (
 						<div
 							key={idx}
-							onMouseDown={() => handleSelectHistory(item)} // blur bo'lsa ham ishlashi uchun
+							onMouseDown={() => handleSelectHistory(item)}
 							className='px-4 py-2 cursor-pointer hover:bg-gray-100'
 						>
 							{item}

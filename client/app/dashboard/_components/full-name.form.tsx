@@ -74,8 +74,7 @@ const FullNameForm = ({ user }: Props) => {
 				/>
 				<Button
 					type='submit'
-					className='self-end mb-0.5'
-					size={'sm'}
+					className='mt-4 w-full md:w-auto'
 					disabled={isLoading}
 				>
 					Submit {isLoading && <Loader className='animate-spin' />}

@@ -100,6 +100,7 @@ const AddProduct = () => {
 			price: 0,
 			image: '',
 			imageKey: '',
+			quantity: 1,
 		})
 	}
 

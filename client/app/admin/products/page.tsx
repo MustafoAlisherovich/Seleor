@@ -31,7 +31,7 @@ const Page = async (props: Props) => {
 
 			<Filter showSearch showCategory />
 
-			<div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-3'>
+			<div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-3'>
 				{products && products.length === 0 && (
 					<p className='text-muted-foreground'>No products found</p>
 				)}

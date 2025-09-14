@@ -1,27 +1,35 @@
-import Link from 'next/link'
-import { Button } from '../ui/button'
+'use client'
 
-function NotFound() {
-	return (
-		<section className='bg-white dark:bg-gray-900'>
-			<div className='py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6'>
-				<div className='mx-auto max-w-screen-sm text-center'>
-					<p className='mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white'>
-						Products Not Found
-					</p>
-					<p className='mb-4 text-lg font-light text-gray-500 dark:text-gray-400'>
-						Sorry, we can't find product. You can see other products if you
-						want.{' '}
-					</p>
-					<Link href={'/'}>
-						<Button size={'lg'} className='cursor-pointer'>
-							Other Products
-						</Button>
-					</Link>
-				</div>
-			</div>
-		</section>
-	)
+import { Button } from '@/components/ui/button'
+import { Search } from 'lucide-react'
+import Link from 'next/link'
+
+interface Props {
+	showBtn?: boolean
 }
 
-export default NotFound
+export default function NoProductsFound({ showBtn }: Props) {
+	return (
+		<div className='flex flex-col items-center justify-center'>
+			<div className='w-full max-w-md rounded-2xl text-center'>
+				<div className='flex flex-col items-center justify-center p-8 space-y-6'>
+					<div>
+						<h2 className='text-xl font-semibold'>No Products Found</h2>
+						<p className='text-muted-foreground mt-2'>
+							We couldn’t find any products matching your search or category.
+						</p>
+					</div>
+
+					{showBtn && (
+						<Link href='/'>
+							<Button className='gap-2'>
+								<Search className='w-4 h-4' />
+								Browse All Products
+							</Button>
+						</Link>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}

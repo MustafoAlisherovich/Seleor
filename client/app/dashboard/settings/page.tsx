@@ -77,7 +77,9 @@ const Page = () => {
 		<>
 			<h1 className='text-xl font-bold'>Danger zone</h1>
 			<Separator className='my-3' />
-			<div className='p-4 bg-secondary flex flex-col space-y-0'>
+
+			{/* Delete account */}
+			<div className='p-4 bg-secondary rounded-lg space-y-2'>
 				<div className='text-lg font-bold'>Delete account</div>
 				<p className='text-sm text-muted-foreground'>
 					Deleting your account will remove all your data from our servers. This
@@ -86,9 +88,9 @@ const Page = () => {
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
 						<Button
-							className='w-fit cursor-pointer'
-							size={'sm'}
-							variant={'destructive'}
+							className='w-full sm:w-fit cursor-pointer'
+							size='sm'
+							variant='destructive'
 						>
 							Delete account
 						</Button>
@@ -111,70 +113,72 @@ const Page = () => {
 				</AlertDialog>
 			</div>
 
-			<div className='p-4 bg-secondary mt-4'>
-				<div className='w-1/2'>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
-							<FormField
-								control={form.control}
-								name='oldPassword'
-								render={({ field }) => (
-									<FormItem className='space-y-0'>
-										<Label>Old password</Label>
-										<FormControl>
-											<Input
-												placeholder='****'
-												type='password'
-												className='bg-white'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage className='text-xs text-red-500' />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='newPassword'
-								render={({ field }) => (
-									<FormItem className='space-y-0'>
-										<Label>New password</Label>
-										<FormControl>
-											<Input
-												placeholder='****'
-												type='password'
-												className='bg-white'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage className='text-xs text-red-500' />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='confirmPassword'
-								render={({ field }) => (
-									<FormItem className='space-y-0'>
-										<Label>Confirm password</Label>
-										<FormControl>
-											<Input
-												placeholder='****'
-												type='password'
-												className='bg-white'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage className='text-xs text-red-500' />
-									</FormItem>
-								)}
-							/>
-							<Button type='submit' className='cursor-pointer'>
-								Submit
-							</Button>
-						</form>
-					</Form>
-				</div>
+			{/* Change password */}
+			<div className='p-4 bg-secondary rounded-lg mt-4'>
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className='space-y-3 w-full sm:w-2/3 md:w-1/2'
+					>
+						<FormField
+							control={form.control}
+							name='oldPassword'
+							render={({ field }) => (
+								<FormItem className='space-y-1'>
+									<Label>Old password</Label>
+									<FormControl>
+										<Input
+											placeholder='****'
+											type='password'
+											className='bg-white'
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className='text-xs text-red-500' />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='newPassword'
+							render={({ field }) => (
+								<FormItem className='space-y-1'>
+									<Label>New password</Label>
+									<FormControl>
+										<Input
+											placeholder='****'
+											type='password'
+											className='bg-white'
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className='text-xs text-red-500' />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='confirmPassword'
+							render={({ field }) => (
+								<FormItem className='space-y-1'>
+									<Label>Confirm password</Label>
+									<FormControl>
+										<Input
+											placeholder='****'
+											type='password'
+											className='bg-white'
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className='text-xs text-red-500' />
+								</FormItem>
+							)}
+						/>
+						<Button type='submit' className='w-full sm:w-fit cursor-pointer'>
+							Submit
+						</Button>
+					</form>
+				</Form>
 			</div>
 		</>
 	)

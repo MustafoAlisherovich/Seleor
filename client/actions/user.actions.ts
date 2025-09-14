@@ -83,7 +83,7 @@ export const getFavourites = actionClient
 	.action<ReturnActionType>(async ({ parsedInput }) => {
 		const session = await getServerSession(authOptions)
 		if (!session?.currentUser?._id) {
-			throw new Error('User ID is required to generate token')
+			return { failure: 'User ID is required to generate token' }
 		}
 		const token = await generateToken(session.currentUser._id)
 		const { data } = await axiosClient.get('/api/user/favorites', {
