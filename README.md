@@ -29,20 +29,3 @@ This project is a fully functional **E-commerce platform** developed using the *
 | 🟢 **Node.js + Express** | Backend API                  |
 | 🍃 **MongoDB**           | NoSQL Database               |
 | 💳 **Stripe**            | Global payment integration   |
-
----
-
-## 📂 Project Setup  
-
-```bash
-# Clone the repository
-https://github.com/MustafoAlisherovich/Seleor.git
-
-# Navigate to project folder
-cd your-repo
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
