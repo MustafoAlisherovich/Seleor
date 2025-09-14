@@ -1,51 +1,48 @@
-🛒 E-commerce Platform
+# 🛒 E-commerce Platform  
 
-This project is a fully functional E-commerce platform developed using the MERN stack with an emphasis on scalability and modern web technologies.
+This project is a fully functional **E-commerce platform** developed using the **MERN stack** with an emphasis on **scalability** and **modern web technologies**.  
 
-🚀 Demo
+---
 
-🔗 Live Preview
+## 🚀 Demo  
+🔗 [Live Preview](https://e-commerce.mustafoalisherovich.ru)  
 
-🧐 Features
+---
 
-Here're some of the project's best features:
+## ✨ Features  
 
-📊 Admin Dashboard Panel – manage products, users, and orders
+- 🛍️ **Shopping Cart** – add, update, and remove products  
+- 📊 **Admin Dashboard Panel** – manage products, users & orders  
+- 💳 **Stripe Payment Integration** – secure & reliable checkout  
+- 💰 **Local Payments (Uzum, Payme, Click)** – tailored for regional users  
+- ⚡ **Scalability & Performance** – optimized for growth  
+- 🔮 **Future Enhancements** – continuous improvements  
 
-💳 Stripe Payment Integration – secure and reliable checkout process
+---
 
-⚡ Scalability and Performance – optimized for growth and fast response
+## 🛠️ Tech Stack  
 
-🔮 Future Enhancements – continuous updates and new features
+| Technology              | Usage                        |
+|--------------------------|------------------------------|
+| ⚛️ **Next.js (React)**   | Frontend framework           |
+| 🟦 **TypeScript**        | Type-safe development        |
+| 🟢 **Node.js + Express** | Backend API                  |
+| 🍃 **MongoDB**           | NoSQL Database               |
+| 💳 **Stripe**            | Global payment integration   |
 
-💰 Uzum, Payme & Click Integration – local payment solutions
+---
 
-💻 Built with
+## 📂 Project Setup  
 
-Technologies used in the project:
-
-⚛️ Next.js (React) – frontend framework
-
-🟦 TypeScript – type-safe development
-
-🟢 Node.js with Express.js – backend API
-
-🍃 MongoDB – database
-
-💳 Stripe – international payments
-
-🇺🇿 Uzum / Payme / Click – local payment gateways
-
-📌 Installation & Setup
-# Clone the repo
+```bash
+# Clone the repository
 git clone https://github.com/your-username/your-repo.git
+
+# Navigate to project folder
+cd your-repo
 
 # Install dependencies
 npm install
 
 # Start development server
 npm run dev
-
-📜 License
-
-This project is licensed under the MIT License.
