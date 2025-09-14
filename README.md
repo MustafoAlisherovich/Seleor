@@ -36,7 +36,7 @@ This project is a fully functional **E-commerce platform** developed using the *
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-repo.git
+https://github.com/MustafoAlisherovich/Seleor.git
 
 # Navigate to project folder
 cd your-repo
