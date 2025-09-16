@@ -14,7 +14,6 @@ This project is a fully functional **E-commerce platform** developed using the *
 - 🛍️ **Shopping Cart** – add, update, and remove products  
 - 📊 **Admin Dashboard Panel** – manage products, users & orders  
 - 💳 **Stripe Payment Integration** – secure & reliable checkout  
-- 💰 **Local Payments (Uzum, Payme, Click)** – tailored for regional users  
 - ⚡ **Scalability & Performance** – optimized for growth  
 - 🔮 **Future Enhancements** – continuous improvements  
 
