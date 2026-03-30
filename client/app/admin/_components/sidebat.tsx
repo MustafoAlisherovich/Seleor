@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { adminSidebar } from '@/constants'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -11,20 +10,16 @@ function Sidebar() {
 	const pathname = usePathname()
 
 	return (
-		<div className='fixed inset-0 mt-[8vh] h-[90vh] w-[300px] max-md:w-24 p-4'>
-			<div className='mt-6 px-4 max-md:px-2'>
-				<h1 className='font-semibold text-xl'>Admin</h1>
-				<Separator className='my-3' />
-				<div className='flex flex-col space-y-3 mt-4'>
+		<div className='fixed left-0 top-[96px] z-30 w-[290px] px-4 max-md:w-24'>
+			<div className='premium-shell p-4'>
+				<h1 className='px-2 text-xl font-bold tracking-tight'>Admin</h1>
+				<div className='mt-4 flex flex-col space-y-2'>
 					{adminSidebar.map(item => (
 						<Button
 							key={item.route}
 							asChild
-							variant={pathname == item.route ? 'secondary' : 'ghost'}
-							className={cn(
-								'flex justify-start',
-								pathname == item.route && 'font-bold text-primary'
-							)}
+							variant={pathname == item.route ? 'default' : 'ghost'}
+							className={cn('justify-start gap-3 rounded-2xl', pathname == item.route && 'font-bold')}
 						>
 							<Link href={item.route}>
 								<item.icon />

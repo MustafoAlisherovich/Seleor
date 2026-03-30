@@ -49,26 +49,23 @@ function Page() {
 	}
 
 	return (
-		<Card className='w-[40vw] p-4 mx-auto shadow-lg'>
-			<h1 className='text-xl font-bold'>Sign-In</h1>
-			<p className='text-sm text-muted-foreground'>
-				Welcome back! Please sign in your account
-			</p>
+		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
+			<div className='space-y-2'>
+				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>Welcome back</p>
+				<h1 className='text-3xl font-bold tracking-tight'>Sign in</h1>
+				<p className='text-sm leading-6 text-muted-foreground'>Access your account and continue shopping with the refreshed experience.</p>
+			</div>
 			<Separator />
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 					<FormField
 						control={form.control}
 						name='email'
 						render={({ field }) => (
-							<FormItem className='space-y-0'>
+							<FormItem className='space-y-2'>
 								<Label>Email</Label>
 								<FormControl>
-									<Input
-										placeholder='example@gmail.com'
-										{...field}
-										disabled={isLoading}
-									/>
+									<Input placeholder='example@gmail.com' {...field} disabled={isLoading} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -78,33 +75,26 @@ function Page() {
 						control={form.control}
 						name='password'
 						render={({ field }) => (
-							<FormItem className='space-y-0'>
-								<Label className='mt-4'>Password</Label>
+							<FormItem className='space-y-2'>
+								<Label>Password</Label>
 								<FormControl>
-									<Input
-										placeholder='****'
-										type='password'
-										{...field}
-										disabled={isLoading}
-									/>
+									<Input placeholder='****' type='password' {...field} disabled={isLoading} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
 						)}
 					/>
-					<Button type='submit' className='w-full mt-4' disabled={isLoading}>
+					<Button type='submit' className='mt-2 w-full' disabled={isLoading}>
 						Submit {isLoading && <Loader className='animate-spin' />}
 					</Button>
 				</form>
 			</Form>
 
-			<div className='mt-4'>
-				<div className='text-sm text-muted-foreground'>
-					Don&apos;t have an account?{' '}
-					<Button asChild variant={'link'} className='p-0'>
-						<Link href='/sign-up'>Sign up</Link>
-					</Button>
-				</div>
+			<div className='text-sm text-muted-foreground'>
+				Don&apos;t have an account?{' '}
+				<Button asChild variant='link' className='h-auto p-0'>
+					<Link href='/sign-up'>Sign up</Link>
+				</Button>
 			</div>
 		</Card>
 	)

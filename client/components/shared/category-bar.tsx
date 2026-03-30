@@ -21,17 +21,17 @@ function CategoryBar() {
 	}
 
 	return (
-		<div className='w-full md:w-auto overflow-x-auto'>
-			<div className='flex items-center gap-2 min-w-max px-2'>
+		<div className='w-full overflow-x-auto md:w-auto custom-scrollbar'>
+			<div className='flex min-w-max items-center gap-2'>
 				{categories.map(category => (
 					<Button
 						key={category}
 						className={cn(
-							'px-4 py-2 rounded-full border hover:bg-primary hover:text-white cursor-pointer transition-colors whitespace-nowrap',
-							category === selectedCategory && 'bg-primary text-white'
+							'rounded-full border border-white/60 bg-white/70 px-4 shadow-sm backdrop-blur-sm transition-all whitespace-nowrap hover:border-primary/20 hover:bg-primary hover:text-white',
+							category === selectedCategory && 'bg-primary text-white',
 						)}
 						variant='outline'
-						size='lg'
+						size='sm'
 						onClick={() => onCategoryChange(category)}
 					>
 						{category}

@@ -13,7 +13,7 @@ const app = express()
 app.post(
 	'/webhook/stripe/',
 	express.raw({ type: 'application/json' }),
-	stripeController.webhook
+	stripeController.webhook,
 )
 
 // Middleware
@@ -23,7 +23,7 @@ app.use(
 		limit: 200,
 		standardHeaders: 'draft-7',
 		legacyHeaders: false,
-	})
+	}),
 )
 app.use(express.json())
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }))

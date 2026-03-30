@@ -21,21 +21,12 @@ function Cart({ product }: Props) {
 	}
 
 	return (
-		<div className='flex gap-4 pt-2'>
-			<Button
-				size='lg'
-				className='cursor-pointer shadow-md'
-				onClick={() => handleCartAction(false)}
-			>
-				Add to Cart
+		<div className='flex flex-col gap-3 sm:flex-row'>
+			<Button size='lg' className='min-w-[180px]' onClick={() => handleCartAction(false)}>
+				Add to cart
 			</Button>
-			<Button
-				size='lg'
-				variant='destructive'
-				className='cursor-pointer shadow-md'
-				onClick={() => handleCartAction(true)}
-			>
-				Buy Now
+			<Button size='lg' variant='outline' className='min-w-[180px]' onClick={() => handleCartAction(true)}>
+				Buy now
 			</Button>
 		</div>
 	)

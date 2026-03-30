@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/hooks/use-cart'
 import { IProduct } from '@/types'
-import { ArrowBigDownDash, ArrowBigUpDash, Trash2 } from 'lucide-react'
+import { Minus, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 
 interface Props extends IProduct {}
@@ -12,21 +12,15 @@ function ShoppingCartCard(item: Props) {
 	const { removeFromCart, increment, decrement } = useCart()
 
 	return (
-		<div className='grid w-full grid-cols-1 md:grid-cols-3 gap-4 rounded-md p-4 shadow-md dark:shadow-sm dark:shadow-white'>
-			<div className='flex items-center gap-2 md:col-span-2'>
-				<Image
-					src={item.image}
-					alt={item.title}
-					width={120}
-					height={90}
-					className='rounded-sm object-cover'
-				/>
-				<div className='flex flex-col'>
-					<h1 className='font-space-grotesk text-lg font-bold'>{item.title}</h1>
-					<p className='line-clamp-2 text-sm text-muted-foreground'>
-						{item.description}
-					</p>
-					<h1 className='font-space-grotesk font-bold md:hidden'>
+		<div className='grid w-full grid-cols-1 gap-4 rounded-[28px] border border-white/60 bg-white/70 p-4 shadow-sm backdrop-blur-sm md:grid-cols-[1fr_auto] dark:border-white/10 dark:bg-white/5'>
+			<div className='flex items-center gap-4'>
+				<div className='overflow-hidden rounded-2xl border border-white/60 bg-white p-3 dark:border-white/10 dark:bg-white/5'>
+					<Image src={item.image} alt={item.title} width={110} height={100} className='rounded-xl object-cover' />
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='text-lg font-bold tracking-tight'>{item.title}</h1>
+					<p className='line-clamp-2 max-w-xl text-sm text-muted-foreground'>{item.description}</p>
+					<h1 className='font-bold text-primary md:hidden'>
 						{(item.price * item.quantity).toLocaleString('en-US', {
 							style: 'currency',
 							currency: 'USD',
@@ -35,43 +29,28 @@ function ShoppingCartCard(item: Props) {
 				</div>
 			</div>
 
-			<div className='flex flex-col md:flex-row md:items-center md:justify-end gap-3'>
-				<div className='flex items-center gap-1'>
-					<h1 className='font-space-grotesk text-xl font-bold'>
-						{item.quantity}
-					</h1>
-					<div className='flex flex-col'>
-						<ArrowBigUpDash
-							className='transition-all hover:opacity-80 active:scale-125 cursor-pointer'
-							role='button'
-							onClick={() => increment(item._id)}
-						/>
-						<ArrowBigDownDash
-							className='transition-all hover:opacity-80 active:scale-125 cursor-pointer'
-							role='button'
-							onClick={() =>
-								item.quantity === 1
-									? removeFromCart(item._id)
-									: decrement(item._id)
-							}
-						/>
-					</div>
+			<div className='flex flex-col justify-between gap-4 md:items-end'>
+				<div className='flex items-center gap-2 rounded-full border border-white/60 bg-background/80 px-2 py-1 shadow-sm'>
+					<Button size='icon' variant='ghost' className='size-8 rounded-full' onClick={() => item.quantity === 1 ? removeFromCart(item._id) : decrement(item._id)}>
+						<Minus className='size-4' />
+					</Button>
+					<span className='min-w-7 text-center text-sm font-bold'>{item.quantity}</span>
+					<Button size='icon' variant='ghost' className='size-8 rounded-full' onClick={() => increment(item._id)}>
+						<Plus className='size-4' />
+					</Button>
 				</div>
 
-				<h1 className='font-space-grotesk text-xl font-bold hidden md:block'>
-					{(item.price * item.quantity).toLocaleString('en-US', {
-						style: 'currency',
-						currency: 'USD',
-					})}
-				</h1>
-
-				<Button
-					size='icon'
-					className='w-full md:w-auto cursor-pointer bg-red-500 md:bg-secondary md:hover:bg-secondary/90'
-					onClick={() => removeFromCart(item._id)}
-				>
-					<Trash2 className='size-5 md:text-red-500' />
-				</Button>
+				<div className='flex items-center gap-3'>
+					<h1 className='hidden text-xl font-bold text-primary md:block'>
+						{(item.price * item.quantity).toLocaleString('en-US', {
+							style: 'currency',
+							currency: 'USD',
+						})}
+					</h1>
+					<Button size='icon' variant='outline' className='rounded-full text-red-500 hover:text-red-500' onClick={() => removeFromCart(item._id)}>
+						<Trash2 className='size-4.5' />
+					</Button>
+				</div>
 			</div>
 		</div>
 	)

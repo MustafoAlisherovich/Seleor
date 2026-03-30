@@ -18,30 +18,36 @@ function Products({ products, totalProducts }: Props) {
 	const searchParams = useSearchParams()
 
 	return (
-		<section id='products' className='container max-w-7xl mx-auto p-6 py-8'>
-			<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-				<h1 className='text-3xl font-bold'>Products</h1>
+		<section id='products' className='container mx-auto max-w-7xl px-4 py-8 md:py-12'>
+			<div className='premium-shell p-6 md:p-8'>
+				<div className='flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between'>
+					<div>
+						<h2 className='section-title'>Featured products</h2>
+						<p className='section-subtitle'>
+							Explore a cleaner catalog layout with curated product cards and smoother browsing.
+						</p>
+					</div>
+					<CategoryBar />
+				</div>
 
-				<CategoryBar />
-			</div>
+				<Separator className='my-6 opacity-60' />
 
-			<Separator className='my-6' />
+				{products.length === 0 && <NoProductsFound />}
+				<div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+					<AnimatePresence>
+						{products.map(product => (
+							<ProductCard key={product._id} product={product} />
+						))}
+					</AnimatePresence>
 
-			{products.length === 0 && <NoProductsFound />}
-			<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-				<AnimatePresence>
-					{products.map(product => (
-						<ProductCard key={product._id} product={product} />
-					))}
-				</AnimatePresence>
-
-				<LoadMore
-					initialCount={products.length}
-					initialPage={1}
-					totalProducts={totalProducts}
-					initialQuery={searchParams.toString()}
-					key={searchParams.toString()}
-				/>
+					<LoadMore
+						initialCount={products.length}
+						initialPage={1}
+						totalProducts={totalProducts}
+						initialQuery={searchParams.toString()}
+						key={searchParams.toString()}
+					/>
+				</div>
 			</div>
 		</section>
 	)

@@ -12,8 +12,8 @@ async function Layout({ children }: ChildProps) {
 	return (
 		<>
 			<Sidebar />
-			<main className='w-full p-4 pl-[320px] pt-7'>
-				<div className='size-full rounded-md px-4 pb-4'>{children}</div>
+			<main className='w-full px-4 py-6 md:pl-[310px]'>
+				<div className='premium-shell min-h-[calc(100vh-150px)] p-6 md:p-8'>{children}</div>
 			</main>
 		</>
 	)

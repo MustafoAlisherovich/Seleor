@@ -103,26 +103,25 @@ function Page() {
 	}
 
 	return (
-		<Card className='w-[40vw] p-4 mx-auto shadow-lg'>
-			<h1 className='text-xl font-bold'>Sign Up</h1>
-			<p className='text-sm text-muted-foreground'>
-				Welcome to our platform! Please sign up to create an
-			</p>
+		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
+			<div className='space-y-2'>
+				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>Create account</p>
+				<h1 className='text-3xl font-bold tracking-tight'>Sign up</h1>
+				<p className='text-sm leading-6 text-muted-foreground'>
+					Create your account and continue with the updated premium experience.
+				</p>
+			</div>
 			<Separator />
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 					<FormField
 						control={form.control}
 						name='fullName'
 						render={({ field }) => (
-							<FormItem className='space-y-0'>
+							<FormItem className='space-y-2'>
 								<Label>Full Name</Label>
 								<FormControl>
-									<Input
-										placeholder='John Doe'
-										{...field}
-										disabled={isLoading || isVerifying}
-									/>
+									<Input placeholder='John Doe' {...field} disabled={isLoading || isVerifying} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -132,14 +131,10 @@ function Page() {
 						control={form.control}
 						name='email'
 						render={({ field }) => (
-							<FormItem className='space-y-0'>
-								<Label className='mt-4'>Email</Label>
+							<FormItem className='space-y-2'>
+								<Label>Email</Label>
 								<FormControl>
-									<Input
-										placeholder='example@gmial.com'
-										{...field}
-										disabled={isLoading || isVerifying}
-									/>
+									<Input placeholder='example@gmail.com' {...field} disabled={isLoading || isVerifying} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -149,23 +144,18 @@ function Page() {
 						control={form.control}
 						name='password'
 						render={({ field }) => (
-							<FormItem className='space-y-0'>
-								<Label className='mt-4'>Password</Label>
+							<FormItem className='space-y-2'>
+								<Label>Password</Label>
 								<FormControl>
-									<Input
-										placeholder='****'
-										type='password'
-										{...field}
-										disabled={isLoading || isVerifying}
-									/>
+									<Input placeholder='****' type='password' {...field} disabled={isLoading || isVerifying} />
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
 						)}
 					/>
 					{!isVerifying && (
-						<Button type='submit' className='w-full mt-4' disabled={isLoading}>
-							Submit {isLoading && <Loader className='animate-spin' />}
+						<Button type='submit' className='w-full' disabled={isLoading}>
+							Continue {isLoading && <Loader className='animate-spin' />}
 						</Button>
 					)}
 				</form>
@@ -173,12 +163,12 @@ function Page() {
 
 			{isVerifying && (
 				<Form {...otpForm}>
-					<form onSubmit={otpForm.handleSubmit(onVerify)}>
+					<form onSubmit={otpForm.handleSubmit(onVerify)} className='space-y-4'>
 						<FormField
 							control={otpForm.control}
 							name='otp'
 							render={({ field }) => (
-								<FormItem className='space-y-0 w-full '>
+								<FormItem className='space-y-2 w-full'>
 									<Label>Enter OTP</Label>
 									<FormControl className='w-full'>
 										<InputOTP maxLength={6} {...field}>
@@ -199,21 +189,12 @@ function Page() {
 								</FormItem>
 							)}
 						/>
-						<div className='flex items-center gap-1'>
-							<Button
-								type='submit'
-								className='mt-2'
-								disabled={isLoading || isResend}
-							>
+						<div className='flex flex-wrap items-center gap-2'>
+							<Button type='submit' disabled={isLoading || isResend}>
 								Verify {isLoading && <Loader className='animate-spin' />}
 							</Button>
 							{isResend && (
-								<Button
-									type='button'
-									onClick={() => onSubmit(form.getValues())}
-									disabled={isLoading}
-									className='mt-2'
-								>
+								<Button type='button' variant='outline' onClick={() => onSubmit(form.getValues())} disabled={isLoading}>
 									Resend OTP {isLoading && <Loader className='animate-spin' />}
 								</Button>
 							)}
@@ -222,13 +203,11 @@ function Page() {
 				</Form>
 			)}
 
-			<div className='mt-4'>
-				<div className='text-sm text-muted-foreground'>
-					Already have an account?{' '}
-					<Button asChild variant={'link'} className='p-0'>
-						<Link href='/sign-in'>Sign in</Link>
-					</Button>
-				</div>
+			<div className='text-sm text-muted-foreground'>
+				Already have an account?{' '}
+				<Button asChild variant='link' className='h-auto p-0'>
+					<Link href='/sign-in'>Sign in</Link>
+				</Button>
 			</div>
 		</Card>
 	)

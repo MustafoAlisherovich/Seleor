@@ -15,68 +15,55 @@ function Navbar() {
 	const { cartsLength } = useCart()
 
 	return (
-		<>
-			<nav className='w-full bg-white'>
-				<div className='container max-w-7xl mx-auto px-4'>
-					<div className='flex items-center justify-between h-16'>
-						<div className='hidden md:block'>
-							<Logo />
-						</div>
+		<nav className='sticky top-0 z-50 border-b border-white/50 bg-background/70 backdrop-blur-2xl dark:border-white/10'>
+			<div className='container mx-auto max-w-7xl px-4 py-3'>
+				<div className='premium-shell flex items-center justify-between gap-3 px-4 py-3 md:px-6'>
+					<div className='hidden shrink-0 md:block'>
+						<Logo />
+					</div>
 
-						<div className='flex flex-1 justify-center'>
-							<GlobalSearch />
-						</div>
+					<div className='flex min-w-0 flex-1 justify-center'>
+						<GlobalSearch />
+					</div>
 
-						<div className='hidden md:flex items-center space-x-4'>
-							<Link href='/dashboard/wishlist'>
-								<Button
-									variant='ghost'
-									className='flex items-center gap-2 px-3 py-2 cursor-pointer'
-								>
-									<Heart className='size-5' />
-									<span className='hidden sm:inline'>Wishlist</span>
+					<div className='hidden items-center gap-2 md:flex'>
+						<Link href='/dashboard/wishlist'>
+							<Button variant='ghost' className='gap-2 px-4'>
+								<Heart className='size-4.5' />
+								<span>Wishlist</span>
+							</Button>
+						</Link>
+
+						<Link href='/shopping/cart'>
+							<Button variant='ghost' className='relative gap-2 px-4'>
+								<ShoppingCart className='size-5' />
+								<span>Cart</span>
+								{cartsLength() > 0 && (
+									<div className='absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold text-white shadow-lg'>
+										{cartsLength()}
+									</div>
+								)}
+							</Button>
+						</Link>
+
+						{!session?.currentUser?._id ? (
+							<Link href='/sign-in'>
+								<Button variant='outline' className='gap-2 px-4'>
+									<User className='size-4.5' />
+									<span>Login</span>
 								</Button>
 							</Link>
+						) : (
+							<UserBox user={session.currentUser} />
+						)}
+					</div>
 
-							<Link href='/shopping/cart'>
-								<Button
-									variant='ghost'
-									className='relative flex items-center gap-2 px-3 py-2 cursor-pointer'
-								>
-									<ShoppingCart className='size-6' />
-									{cartsLength() > 0 && (
-										<div className='absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-destructive text-white text-xs'>
-											{cartsLength()}
-										</div>
-									)}
-									{cartsLength() === 0 && (
-										<span className='hidden sm:inline'>Cart</span>
-									)}
-								</Button>
-							</Link>
-
-							{!session?.currentUser?._id ? (
-								<Link href='/sign-in'>
-									<Button
-										variant='ghost'
-										className='flex items-center gap-2 px-3 py-2 cursor-pointer'
-									>
-										<User className='size-6' />
-										<span className='hidden sm:inline'>Login</span>
-									</Button>
-								</Link>
-							) : (
-								<UserBox user={session.currentUser} />
-							)}
-						</div>
-
-						<div className='md:hidden'>
-							<Mobile />
-						</div>
+					<div className='md:hidden'>
+						<Mobile />
 					</div>
 				</div>
-			</nav>
-		</>
+			</div>
+		</nav>
 	)
 }
 

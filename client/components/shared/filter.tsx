@@ -51,11 +51,11 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 		router.push(newUrl)
 
 		if (value === '') {
-			const newUrl = removeUrlQuery({
+			const cleanUrl = removeUrlQuery({
 				key: 'q',
 				params: searchParams.toString(),
 			})
-			router.push(newUrl)
+			router.push(cleanUrl)
 		}
 	}
 
@@ -64,26 +64,26 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 	return (
 		<div
 			className={cn(
-				'gap-1 max-md:w-full grid',
+				'grid gap-3',
 				showSearch && showCategory ? 'grid-cols-3' : 'grid-cols-2',
-				'max-md:grid-cols-1'
+				'max-md:grid-cols-1',
 			)}
 		>
 			{showSearch && (
-				<div className='flex items-center bg-secondary border w-full'>
+				<div className='flex items-center gap-2 rounded-2xl border border-white/60 bg-white/70 px-3 shadow-sm backdrop-blur-sm'>
+					<Search className='text-muted-foreground size-4' />
 					<Input
-						placeholder='Search'
-						className='text-xs border-none no-focus flex-1'
+						placeholder='Search...'
+						className='h-11 border-none bg-transparent px-0 shadow-none no-focus'
 						onChange={handleSearchDebounce}
 					/>
-					<Search className='mr-2 cursor-pointer text-muted-foreground' />
 				</div>
 			)}
 
 			<Select onValueChange={onFilterChange}>
-				<SelectTrigger className='bg-secondary text-xs w-full'>
+				<SelectTrigger className='h-12 rounded-2xl border-white/60 bg-white/70 text-sm shadow-sm backdrop-blur-sm'>
 					<SelectValue
-						placeholder='Select filter'
+						placeholder='Sort by'
 						className='text-muted-foreground'
 					/>
 				</SelectTrigger>
@@ -95,7 +95,7 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 
 			{showCategory && (
 				<Select onValueChange={onCategoryChange}>
-					<SelectTrigger className='bg-secondary text-xs w-full'>
+					<SelectTrigger className='h-12 rounded-2xl border-white/60 bg-white/70 text-sm shadow-sm backdrop-blur-sm'>
 						<SelectValue
 							placeholder='Select category'
 							className='text-muted-foreground'

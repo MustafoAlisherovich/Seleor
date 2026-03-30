@@ -1,6 +1,6 @@
 'use client'
 
-import { Search as SearchIcon } from 'lucide-react'
+import { Clock3, Search as SearchIcon } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
@@ -20,12 +20,11 @@ function GlobalSearch() {
 		}
 	}, [])
 
-	// Save to history
 	const saveToHistory = (query: string) => {
 		if (!query.trim()) return
 		const updated = [query, ...history.filter(item => item !== query)].slice(
 			0,
-			5
+			5,
 		)
 		setHistory(updated)
 		localStorage.setItem('searchHistory', JSON.stringify(updated))
@@ -34,7 +33,7 @@ function GlobalSearch() {
 	const handleSearch = () => {
 		if (value.trim()) {
 			saveToHistory(value.trim())
-			router.push(`/search?q=${encodeURIComponent(value)}`)
+			router.push(`/products?q=${encodeURIComponent(value)}`)
 			router.refresh()
 			setShowHistory(false)
 		}
@@ -49,17 +48,17 @@ function GlobalSearch() {
 
 	const handleSelectHistory = (item: string) => {
 		setValue(item)
-		router.push(`/search?q=${encodeURIComponent(item)}`)
+		router.push(`/products?q=${encodeURIComponent(item)}`)
 		setShowHistory(false)
 	}
 
 	return (
-		<div className='relative flex flex-col items-center w-full max-w-md'>
-			<div className='relative flex items-center w-full'>
+		<div className='relative flex w-full max-w-2xl flex-col'>
+			<div className='relative flex items-center'>
 				<Input
 					type='text'
-					placeholder='Search...'
-					className='pr-20'
+					placeholder='Search for premium picks...'
+					className='h-12 rounded-2xl border-white/60 bg-white/75 pr-14 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.7)] dark:bg-white/5'
 					value={value}
 					onChange={e => setValue(e.target.value)}
 					onKeyDown={handleKeyDown}
@@ -69,8 +68,7 @@ function GlobalSearch() {
 
 				<Button
 					size='icon'
-					variant='ghost'
-					className='absolute right-1'
+					className='absolute right-1.5 size-9 rounded-xl'
 					onClick={handleSearch}
 					disabled={!value.trim()}
 				>
@@ -78,16 +76,16 @@ function GlobalSearch() {
 				</Button>
 			</div>
 
-			{/* Search history dropdown */}
 			{showHistory && history.length > 0 && (
-				<div className='absolute top-full mt-2 w-full bg-white border rounded-lg shadow-md z-10'>
+				<div className='premium-shell absolute top-full z-20 mt-3 w-full overflow-hidden rounded-3xl p-2'>
 					{history.map((item, idx) => (
 						<div
 							key={idx}
 							onMouseDown={() => handleSelectHistory(item)}
-							className='px-4 py-2 cursor-pointer hover:bg-gray-100'
+							className='flex cursor-pointer items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors hover:bg-accent/80'
 						>
-							{item}
+							<Clock3 className='size-4 text-muted-foreground' />
+							<span>{item}</span>
 						</div>
 					))}
 				</div>

@@ -51,16 +51,12 @@ export default function LoadMore({
 			))}
 
 			{currentTotal < totalProducts && (
-				<div className='flex justify-center mt-6 col-span-full'>
+				<div className='col-span-full mt-4 flex justify-center'>
 					{loading ? (
-						<Loader2 className='text-primary size-14 animate-spin' />
+						<Loader2 className='size-10 animate-spin text-primary' />
 					) : (
-						<Button
-							className='w-[40vw] h-[7vh] cursor-pointer border border-gray-300'
-							variant={'secondary'}
-							onClick={handleLoadMore}
-						>
-							<span className='text-[16px] font-semibold'>Read More 8</span>
+						<Button className='min-w-[220px]' variant='outline' onClick={handleLoadMore}>
+							Load more products
 						</Button>
 					)}
 				</div>

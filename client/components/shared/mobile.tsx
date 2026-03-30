@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '../ui/sheet'
+import GlobalSearch from './global-search'
 import Logo from './logo'
 import UserBox from './user-box'
 
@@ -16,28 +17,30 @@ function Mobile() {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button variant={'ghost'} size={'icon'}>
+				<Button variant='outline' size='icon' className='border-white/60 bg-white/70'>
 					<Menu />
 				</Button>
 			</SheetTrigger>
-			<SheetTitle></SheetTitle>
+			<SheetTitle />
 
-			<SheetContent side='top'>
-				<div className='flex flex-col items-center space-y-3'>
-					<Logo />
-
-					<div className='flex justify-center items-center space-x-6'>
+			<SheetContent side='top' className='border-none bg-transparent p-4 shadow-none'>
+				<div className='premium-shell space-y-6 p-5'>
+					<div className='flex items-center justify-between'>
+						<Logo />
+					</div>
+					<GlobalSearch />
+					<div className='grid grid-cols-3 gap-3'>
 						<Link href='/dashboard/wishlist'>
-							<Button variant='ghost' size='icon'>
-								<Heart className='size-6' />
+							<Button variant='secondary' className='w-full'>
+								<Heart className='size-5' />
 							</Button>
 						</Link>
 
 						<Link href='/shopping/cart'>
-							<Button variant='ghost' size='icon' className='relative'>
-								<ShoppingCart className='size-6' />
+							<Button variant='secondary' className='relative w-full'>
+								<ShoppingCart className='size-5' />
 								{cartsLength() > 0 && (
-									<div className='absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-destructive text-white text-xs'>
+									<div className='absolute right-2 top-2 flex min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white'>
 										{cartsLength()}
 									</div>
 								)}
@@ -46,12 +49,14 @@ function Mobile() {
 
 						{!session?.currentUser?._id ? (
 							<Link href='/sign-in'>
-								<Button variant='ghost' size='icon'>
-									<User className='size-6' />
+								<Button variant='secondary' className='w-full'>
+									<User className='size-5' />
 								</Button>
 							</Link>
 						) : (
-							<UserBox user={session.currentUser} />
+							<div className='flex items-center justify-center'>
+								<UserBox user={session.currentUser} />
+							</div>
 						)}
 					</div>
 				</div>
