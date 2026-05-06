@@ -1,8 +1,7 @@
 import { getProducts } from '@/actions/user.actions'
-import ProductCard from '@/components/card/product.card'
 import NotFound from '@/components/shared/not-found'
 import { SearchParams } from '@/types'
-import { AnimatePresence } from 'framer-motion'
+import ProductsList from './_components/product-list'
 
 interface Props {
 	searchParams: SearchParams
@@ -32,11 +31,7 @@ export default async function SearchPage(props: Props) {
 					</div>
 				) : (
 					<div className='mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-						<AnimatePresence>
-							{products.map(product => (
-								<ProductCard key={product._id} product={product} />
-							))}
-						</AnimatePresence>
+						<ProductsList products={products} />
 					</div>
 				)}
 			</div>
