@@ -47,17 +47,19 @@ function Page() {
 
 	async function onSubmit(values: z.infer<typeof registerSchema>) {
 		setIsLoading(true)
+
 		const res = await sendOtp({ email: values.email })
 
-		if (res?.serverError || res?.validationErrors || !res?.data) {
-			return onError('Something went wrong')
+		if (res?.serverError || res?.validationErrors || !res.data) {
+			return onError('Something went wrong!')
 		}
+
 		if (res.data?.failure) {
 			return onError(res.data.failure)
 		}
 
 		if (res.data.status === 200) {
-			toast.success('OTP sent successfully')
+			toast.success('OTP sent successfully!')
 			setIsVerifying(true)
 			setIsLoading(false)
 			setResend(false)
@@ -89,7 +91,7 @@ function Page() {
 				return onError('Something went wrong')
 			}
 			if (response.data?.failure) {
-				return onError(res.data.failure)
+				return onError(response.data.failure)
 			}
 
 			if (response.data?.user._id) {
@@ -105,7 +107,9 @@ function Page() {
 	return (
 		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
 			<div className='space-y-2'>
-				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>Create account</p>
+				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>
+					Create account
+				</p>
 				<h1 className='text-3xl font-bold tracking-tight'>Sign up</h1>
 				<p className='text-sm leading-6 text-muted-foreground'>
 					Create your account and continue with the updated premium experience.
@@ -121,7 +125,11 @@ function Page() {
 							<FormItem className='space-y-2'>
 								<Label>Full Name</Label>
 								<FormControl>
-									<Input placeholder='John Doe' {...field} disabled={isLoading || isVerifying} />
+									<Input
+										placeholder='John Doe'
+										{...field}
+										disabled={isLoading || isVerifying}
+									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -134,7 +142,11 @@ function Page() {
 							<FormItem className='space-y-2'>
 								<Label>Email</Label>
 								<FormControl>
-									<Input placeholder='example@gmail.com' {...field} disabled={isLoading || isVerifying} />
+									<Input
+										placeholder='example@gmail.com'
+										{...field}
+										disabled={isLoading || isVerifying}
+									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -147,7 +159,12 @@ function Page() {
 							<FormItem className='space-y-2'>
 								<Label>Password</Label>
 								<FormControl>
-									<Input placeholder='****' type='password' {...field} disabled={isLoading || isVerifying} />
+									<Input
+										placeholder='****'
+										type='password'
+										{...field}
+										disabled={isLoading || isVerifying}
+									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -194,7 +211,12 @@ function Page() {
 								Verify {isLoading && <Loader className='animate-spin' />}
 							</Button>
 							{isResend && (
-								<Button type='button' variant='outline' onClick={() => onSubmit(form.getValues())} disabled={isLoading}>
+								<Button
+									type='button'
+									variant='outline'
+									onClick={() => onSubmit(form.getValues())}
+									disabled={isLoading}
+								>
 									Resend OTP {isLoading && <Loader className='animate-spin' />}
 								</Button>
 							)}

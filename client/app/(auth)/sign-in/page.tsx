@@ -42,8 +42,8 @@ function Page() {
 			return onError(res.data.failure)
 		}
 		if (res.data?.user) {
-			toast.success('Login successful')
-			signIn('credentials', { userId: res.data.user._id, callbackUrl: '/' })
+			toast.success('Login Successfull')
+			signIn('credentials', { userId: res.data?.user._id, callbackUrl: '/' })
 			setIsLoading(false)
 		}
 	}
@@ -51,9 +51,14 @@ function Page() {
 	return (
 		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
 			<div className='space-y-2'>
-				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>Welcome back</p>
+				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>
+					Welcome back
+				</p>
 				<h1 className='text-3xl font-bold tracking-tight'>Sign in</h1>
-				<p className='text-sm leading-6 text-muted-foreground'>Access your account and continue shopping with the refreshed experience.</p>
+				<p className='text-sm leading-6 text-muted-foreground'>
+					Access your account and continue shopping with the refreshed
+					experience.
+				</p>
 			</div>
 			<Separator />
 			<Form {...form}>
@@ -65,7 +70,11 @@ function Page() {
 							<FormItem className='space-y-2'>
 								<Label>Email</Label>
 								<FormControl>
-									<Input placeholder='example@gmail.com' {...field} disabled={isLoading} />
+									<Input
+										placeholder='example@gmail.com'
+										{...field}
+										disabled={isLoading}
+									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
@@ -78,7 +87,12 @@ function Page() {
 							<FormItem className='space-y-2'>
 								<Label>Password</Label>
 								<FormControl>
-									<Input placeholder='****' type='password' {...field} disabled={isLoading} />
+									<Input
+										placeholder='****'
+										type='password'
+										{...field}
+										disabled={isLoading}
+									/>
 								</FormControl>
 								<FormMessage className='text-xs text-red-500' />
 							</FormItem>
