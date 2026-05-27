@@ -40,13 +40,13 @@ function Cart() {
 	}
 
 	return (
-		<div className='container mx-auto max-w-7xl px-4 py-8 md:py-12'>
+		<div className='container mx-auto max-w-7xl px-3 py-6 sm:px-4 md:py-10'>
 			<div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
 				<Card className='lg:col-span-2'>
-					<CardContent className='py-6'>
+					<CardContent className='px-4 py-5 sm:px-6 sm:py-6'>
 						{carts.length > 0 ? (
 							<>
-								<h1 className='text-3xl font-bold tracking-tight'>Shopping cart</h1>
+								<h1 className='text-2xl font-bold tracking-tight sm:text-3xl'>Shopping cart</h1>
 								<p className='mt-2 text-sm text-muted-foreground'>You have {carts.length} products in your cart.</p>
 							</>
 						) : (
@@ -64,8 +64,8 @@ function Cart() {
 				</Card>
 
 				<div>
-					<Card>
-						<CardContent className='py-6'>
+					<Card className='lg:sticky lg:top-28'>
+						<CardContent className='px-4 py-5 sm:px-6 sm:py-6'>
 							<h1 className='text-2xl font-bold tracking-tight'>Order summary</h1>
 							<p className='mt-2 text-sm text-muted-foreground'>Review total and continue to checkout.</p>
 

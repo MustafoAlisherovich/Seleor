@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '../ui/sheet'
-import GlobalSearch from './global-search'
 import Logo from './logo'
 import UserBox from './user-box'
 
@@ -17,18 +16,24 @@ function Mobile() {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button variant='outline' size='icon' className='border-white/60 bg-white/70'>
+				<Button
+					variant='outline'
+					size='icon'
+					className='border-white/60 bg-white/80'
+				>
 					<Menu />
 				</Button>
 			</SheetTrigger>
 			<SheetTitle />
 
-			<SheetContent side='top' className='border-none bg-transparent p-4 shadow-none'>
-				<div className='premium-shell space-y-6 p-5'>
+			<SheetContent
+				side='top'
+				className='border-none bg-transparent p-3 shadow-none sm:p-4'
+			>
+				<div className='premium-shell space-y-5 p-4 sm:p-5'>
 					<div className='flex items-center justify-between'>
 						<Logo />
 					</div>
-					<GlobalSearch />
 					<div className='grid grid-cols-3 gap-3'>
 						<Link href='/dashboard/wishlist'>
 							<Button variant='secondary' className='w-full'>

@@ -118,12 +118,12 @@ const AddProduct = () => {
 
 	return (
 		<>
-			<Button size={'sm'} onClick={onOpen}>
+			<Button size={'sm'} onClick={onOpen} className='w-full sm:w-auto'>
 				<span>Add Product</span>
 				<PlusCircle />
 			</Button>
 			<Sheet open={open} onOpenChange={setOpen}>
-				<SheetContent>
+				<SheetContent className='w-full overflow-y-auto sm:max-w-md'>
 					<SheetHeader>
 						<SheetTitle>Manage your product</SheetTitle>
 						<SheetDescription>
@@ -174,7 +174,7 @@ const AddProduct = () => {
 								name='category'
 								render={({ field }) => (
 									<FormItem className='space-y-0'>
-										<Label className='text-xs'>Cateogry</Label>
+										<Label className='text-xs'>Category</Label>
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}
@@ -221,11 +221,12 @@ const AddProduct = () => {
 								)}
 							/>
 							{form.watch('image') && (
-								<div className='w-full h-[200px] bg-secondary flex justify-center items-center relative'>
+								<div className='relative flex h-[200px] w-full items-center justify-center overflow-hidden rounded-lg bg-secondary'>
 									<Image
 										src={form.watch('image')}
 										alt='product image'
 										fill
+										sizes='(min-width: 640px) 384px, 100vw'
 										className='object-cover'
 									/>
 									<Button

@@ -49,12 +49,12 @@ function Page() {
 	}
 
 	return (
-		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
+		<Card className='mx-auto w-full max-w-xl p-5 sm:p-7 md:p-8'>
 			<div className='space-y-2'>
-				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>
+				<p className='text-xs font-semibold uppercase text-primary'>
 					Welcome back
 				</p>
-				<h1 className='text-3xl font-bold tracking-tight'>Sign in</h1>
+				<h1 className='text-2xl font-bold tracking-tight sm:text-3xl'>Sign in</h1>
 				<p className='text-sm leading-6 text-muted-foreground'>
 					Access your account and continue shopping with the refreshed
 					experience.

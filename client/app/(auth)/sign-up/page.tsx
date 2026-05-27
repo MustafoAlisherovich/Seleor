@@ -105,12 +105,12 @@ function Page() {
 	}
 
 	return (
-		<Card className='mx-auto w-full max-w-xl p-7 md:p-8'>
+		<Card className='mx-auto w-full max-w-xl p-5 sm:p-7 md:p-8'>
 			<div className='space-y-2'>
-				<p className='text-xs font-semibold uppercase tracking-[0.24em] text-primary'>
+				<p className='text-xs font-semibold uppercase text-primary'>
 					Create account
 				</p>
-				<h1 className='text-3xl font-bold tracking-tight'>Sign up</h1>
+				<h1 className='text-2xl font-bold tracking-tight sm:text-3xl'>Sign up</h1>
 				<p className='text-sm leading-6 text-muted-foreground'>
 					Create your account and continue with the updated premium experience.
 				</p>
@@ -185,17 +185,17 @@ function Page() {
 							control={otpForm.control}
 							name='otp'
 							render={({ field }) => (
-								<FormItem className='space-y-2 w-full'>
+								<FormItem className='w-full space-y-2'>
 									<Label>Enter OTP</Label>
 									<FormControl className='w-full'>
-										<InputOTP maxLength={6} {...field}>
-											<InputOTPGroup className='w-full'>
+										<InputOTP maxLength={6} {...field} className='w-full'>
+											<InputOTPGroup className='grid flex-1 grid-cols-3'>
 												<InputOTPSlot index={0} className='w-full' />
 												<InputOTPSlot index={1} className='w-full' />
 												<InputOTPSlot index={2} className='w-full' />
 											</InputOTPGroup>
 											<InputOTPSeparator />
-											<InputOTPGroup className='w-full'>
+											<InputOTPGroup className='grid flex-1 grid-cols-3'>
 												<InputOTPSlot index={3} className='w-full' />
 												<InputOTPSlot index={4} className='w-full' />
 												<InputOTPSlot index={5} className='w-full' />

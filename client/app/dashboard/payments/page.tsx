@@ -43,7 +43,7 @@ const Page = async (props: Props) => {
 
 			<Separator className='my-3' />
 
-			<div className='hidden md:block'>
+			<div className='hidden overflow-x-auto md:block'>
 				<Table className='text-sm'>
 					{transaction && transaction.length > 0 && (
 						<TableCaption>A list of your recent orders.</TableCaption>
@@ -119,10 +119,10 @@ const Page = async (props: Props) => {
 					transaction.map(t => (
 						<div
 							key={t._id}
-							className='rounded-lg border p-3 space-y-2 bg-white shadow-sm'
+							className='space-y-2 rounded-lg border border-white/60 bg-white/75 p-3 shadow-sm dark:border-white/10 dark:bg-white/5'
 						>
 							{/* Provider + Status */}
-							<div className='flex justify-between items-center'>
+							<div className='flex items-center justify-between'>
 								<Badge className='capitalize' variant='secondary'>
 									{t.provider}
 								</Badge>

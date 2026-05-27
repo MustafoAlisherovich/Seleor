@@ -79,7 +79,7 @@ const Page = () => {
 			<Separator className='my-3' />
 
 			{/* Delete account */}
-			<div className='p-4 bg-secondary rounded-lg space-y-2'>
+			<div className='space-y-2 rounded-lg border border-white/60 bg-secondary/75 p-4 dark:border-white/10'>
 				<div className='text-lg font-bold'>Delete account</div>
 				<p className='text-sm text-muted-foreground'>
 					Deleting your account will remove all your data from our servers. This
@@ -114,11 +114,11 @@ const Page = () => {
 			</div>
 
 			{/* Change password */}
-			<div className='p-4 bg-secondary rounded-lg mt-4'>
+			<div className='mt-4 rounded-lg border border-white/60 bg-secondary/75 p-4 dark:border-white/10'>
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className='space-y-3 w-full sm:w-2/3 md:w-1/2'
+						className='w-full space-y-3 lg:w-2/3 xl:w-1/2'
 					>
 						<FormField
 							control={form.control}

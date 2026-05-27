@@ -10,20 +10,20 @@ function Sidebar() {
 	const pathname = usePathname()
 
 	return (
-		<div className='fixed left-0 top-[96px] z-30 w-[290px] px-4 max-md:w-24'>
-			<div className='premium-shell p-4'>
-				<h1 className='px-2 text-xl font-bold tracking-tight'>Admin</h1>
-				<div className='mt-4 flex flex-col space-y-2'>
+		<div className='sticky top-[76px] z-40 px-3 py-3 sm:px-4 md:fixed md:left-0 md:top-[96px] md:w-[290px] md:py-0'>
+			<div className='premium-shell p-2 sm:p-3 md:p-4'>
+				<h1 className='hidden px-2 text-xl font-bold tracking-tight md:block'>Admin</h1>
+				<div className='custom-scrollbar flex gap-2 overflow-x-auto md:mt-4 md:flex-col md:overflow-visible'>
 					{adminSidebar.map(item => (
 						<Button
 							key={item.route}
 							asChild
 							variant={pathname == item.route ? 'default' : 'ghost'}
-							className={cn('justify-start gap-3 rounded-2xl', pathname == item.route && 'font-bold')}
+							className={cn('min-w-12 justify-center gap-2 rounded-lg px-3 md:min-w-0 md:justify-start md:gap-3', pathname == item.route && 'font-bold')}
 						>
-							<Link href={item.route}>
-								<item.icon />
-								<span>{item.name}</span>
+							<Link href={item.route} className='flex items-center'>
+								<item.icon className='h-4 w-4' />
+								<span className='hidden whitespace-nowrap sm:inline'>{item.name}</span>
 							</Link>
 						</Button>
 					))}

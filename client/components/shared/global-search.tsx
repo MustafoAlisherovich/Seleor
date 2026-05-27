@@ -58,7 +58,7 @@ function GlobalSearch() {
 				<Input
 					type='text'
 					placeholder='Search for premium picks...'
-					className='h-12 rounded-2xl border-white/60 bg-white/75 pr-14 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.7)] dark:bg-white/5'
+					className='h-10 rounded-lg border-white/60 bg-white/80 pr-12 text-sm shadow-[0_14px_36px_-30px_rgba(15,23,42,0.7)] sm:h-12 sm:pr-14 dark:bg-white/5'
 					value={value}
 					onChange={e => setValue(e.target.value)}
 					onKeyDown={handleKeyDown}
@@ -68,7 +68,7 @@ function GlobalSearch() {
 
 				<Button
 					size='icon'
-					className='absolute right-1.5 size-9 rounded-xl'
+					className='absolute right-1.5 size-8 rounded-md sm:size-9'
 					onClick={handleSearch}
 					disabled={!value.trim()}
 				>
@@ -77,12 +77,12 @@ function GlobalSearch() {
 			</div>
 
 			{showHistory && history.length > 0 && (
-				<div className='premium-shell absolute top-full z-20 mt-3 w-full overflow-hidden rounded-3xl p-2'>
+				<div className='premium-shell absolute top-full z-20 mt-2 w-full overflow-hidden p-2 sm:mt-3'>
 					{history.map((item, idx) => (
 						<div
 							key={idx}
 							onMouseDown={() => handleSelectHistory(item)}
-							className='flex cursor-pointer items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors hover:bg-accent/80'
+							className='flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-accent/80 sm:px-4 sm:py-3'
 						>
 							<Clock3 className='size-4 text-muted-foreground' />
 							<span>{item}</span>

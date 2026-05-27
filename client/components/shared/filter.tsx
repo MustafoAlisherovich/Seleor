@@ -64,13 +64,12 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 	return (
 		<div
 			className={cn(
-				'grid gap-3',
-				showSearch && showCategory ? 'grid-cols-3' : 'grid-cols-2',
-				'max-md:grid-cols-1',
+				'grid w-full gap-3',
+				showSearch && showCategory ? 'md:grid-cols-3' : 'md:grid-cols-2',
 			)}
 		>
 			{showSearch && (
-				<div className='flex items-center gap-2 rounded-2xl border border-white/60 bg-white/70 px-3 shadow-sm backdrop-blur-sm'>
+				<div className='flex items-center gap-2 rounded-lg border border-white/60 bg-white/75 px-3 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5'>
 					<Search className='text-muted-foreground size-4' />
 					<Input
 						placeholder='Search...'
@@ -81,7 +80,7 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 			)}
 
 			<Select onValueChange={onFilterChange}>
-				<SelectTrigger className='h-12 rounded-2xl border-white/60 bg-white/70 text-sm shadow-sm backdrop-blur-sm'>
+				<SelectTrigger className='h-12 rounded-lg border-white/60 bg-white/75 text-sm shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5'>
 					<SelectValue
 						placeholder='Sort by'
 						className='text-muted-foreground'
@@ -95,7 +94,7 @@ const Filter: FC<Props> = ({ showSearch, showCategory }) => {
 
 			{showCategory && (
 				<Select onValueChange={onCategoryChange}>
-					<SelectTrigger className='h-12 rounded-2xl border-white/60 bg-white/70 text-sm shadow-sm backdrop-blur-sm'>
+					<SelectTrigger className='h-12 rounded-lg border-white/60 bg-white/75 text-sm shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-white/5'>
 						<SelectValue
 							placeholder='Select category'
 							className='text-muted-foreground'

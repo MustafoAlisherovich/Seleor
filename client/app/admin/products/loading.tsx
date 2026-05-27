@@ -6,7 +6,7 @@ import AddProduct from '../_components/add-product'
 const Loading = () => {
 	return (
 		<>
-			<div className='flex justify-between items-center w-full'>
+			<div className='flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
 				<h1 className='text-xl font-bold'>Products</h1>
 				<AddProduct />
 			</div>
@@ -15,12 +15,12 @@ const Loading = () => {
 
 			<Filter showSearch showCategory />
 
-			<div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-3'>
+			<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
 				{/* Loader */}
 				{Array.from({ length: 4 }).map((_, i) => (
 					<div key={i} className='space-y-3'>
-						<Skeleton className='h-[250px] w-full rounded-2xl' />
-						<div className='flex justify-between items-center'>
+						<Skeleton className='h-[250px] w-full rounded-lg' />
+						<div className='flex items-center justify-between'>
 							<Skeleton className='h-4 w-2/3' />
 							<Skeleton className='h-4 w-12' />
 						</div>

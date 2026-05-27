@@ -56,10 +56,10 @@ const EditInformation = ({ user }: Props) => {
 
 	return (
 		<>
-			<div className='w-full h-52 bg-secondary flex justify-center items-center'>
+			<div className='flex h-44 w-full items-center justify-center rounded-lg border border-white/60 bg-secondary/75 sm:h-52 dark:border-white/10'>
 				<div className='relative'>
 					{isLoading && (
-						<Skeleton className='absolute inset-0 bg-secondary z-50 flex items-center justify-center'>
+						<Skeleton className='absolute inset-0 z-50 flex items-center justify-center bg-secondary'>
 							<Loader className='animate-spin' />
 						</Skeleton>
 					)}
@@ -77,7 +77,7 @@ const EditInformation = ({ user }: Props) => {
 						<DialogTrigger asChild>
 							<Button
 								size='icon'
-								className='absolute right-0 bottom-0 rounded-full border border-primary cursor-pointer'
+								className='absolute bottom-0 right-0 cursor-pointer border border-primary'
 								variant='secondary'
 							>
 								<Edit2 className='h-4 w-4 md:h-5 md:w-5' />
@@ -101,13 +101,13 @@ const EditInformation = ({ user }: Props) => {
 			</div>
 
 			{/* User info (accordion) */}
-			<div className='my-3 bg-secondary px-2 md:px-4'>
+			<div className='my-4 rounded-lg border border-white/60 bg-secondary/75 px-3 sm:px-4 dark:border-white/10'>
 				<Accordion type='single' collapsible>
 					<AccordionItem value='item-1'>
 						<AccordionTrigger className='cursor-pointer'>
 							<div className='flex flex-col space-y-0 text-sm md:text-base'>
 								<h2 className='font-bold'>Full Name</h2>
-								<p className='text-muted-foreground break-all max-w-full sm:max-w-[200px] sm:truncate lg:max-w-none lg:truncate-0'>
+								<p className='max-w-full break-all text-muted-foreground sm:max-w-[260px] sm:truncate lg:max-w-none'>
 									{user.fullName}
 								</p>
 							</div>
@@ -121,7 +121,7 @@ const EditInformation = ({ user }: Props) => {
 						<AccordionTrigger className='cursor-pointer'>
 							<div className='flex flex-col space-y-0 text-sm md:text-base'>
 								<h2 className='font-bold'>Email</h2>
-								<p className='text-muted-foreground break-all max-w-full sm:max-w-[200px] sm:truncate lg:max-w-none lg:truncate-0'>
+								<p className='max-w-full break-all text-muted-foreground sm:max-w-[260px] sm:truncate lg:max-w-none'>
 									{user.email}
 								</p>
 							</div>

@@ -34,21 +34,21 @@ function WishlistCard({ product }: Props) {
 	}
 
 	return (
-		<div className='relative group rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden min-h-[220px] sm:min-h-[250px] flex flex-col'>
-			<div className='relative w-full h-40 sm:h-56 flex items-center justify-center bg-white'>
+		<div className='group relative flex min-h-[260px] flex-col overflow-hidden rounded-lg border border-white/60 bg-white/75 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/5'>
+			<div className='relative flex h-44 w-full items-center justify-center bg-white sm:h-56 dark:bg-white/5'>
 				<Link href={`/product/${product._id}`}>
 					<Image
 						src={product.image!}
 						width={160}
 						height={160}
-						className='object-contain transition-transform duration-300 group-hover:scale-105 max-h-[140px] sm:max-h-[200px]'
+						className='h-auto max-h-[140px] w-auto object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-[200px]'
 						alt={product.title!}
 					/>
 				</Link>
-				<div className='absolute right-2 top-2 sm:right-3 sm:top-3 z-10 transition-opacity'>
+				<div className='absolute right-2 top-2 z-10 transition-opacity sm:right-3 sm:top-3'>
 					<Button
 						size='icon'
-						className='cursor-pointer rounded-full bg-red-500 shadow-md hover:bg-red-400'
+						className='cursor-pointer bg-red-500 shadow-md hover:bg-red-400'
 						disabled={isLoading}
 						onClick={onDelete}
 					>
@@ -59,11 +59,11 @@ function WishlistCard({ product }: Props) {
 
 			{/* Title & Price */}
 			<Link href={`/product/${product._id}`}>
-				<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center px-2 sm:px-3 mt-auto gap-1 sm:gap-2'>
-					<h1 className='font-semibold text-sm sm:text-base line-clamp-1'>
+				<div className='mt-auto flex flex-col gap-1 px-3 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-2'>
+					<h1 className='line-clamp-2 text-sm font-semibold sm:text-base'>
 						{product.title}
 					</h1>
-					<p className='text-sm sm:text-lg font-bold text-primary'>
+					<p className='shrink-0 text-sm font-bold text-primary sm:text-lg'>
 						{formatPrice(product.price!)}
 					</p>
 				</div>

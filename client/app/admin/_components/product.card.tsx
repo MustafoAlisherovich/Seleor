@@ -52,24 +52,24 @@ const ProductCard: FC<Props> = ({ product }) => {
 	}
 
 	return (
-		<div className={'border relative flex justify-between flex-col'}>
-			<div className='bg-secondary relative'>
+		<div className='relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-lg border border-white/60 bg-white/75 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/5'>
+			<div className='relative flex min-h-44 items-center justify-center bg-secondary/70 p-4'>
 				<Image
 					src={product.image!}
 					width={200}
 					height={200}
-					className='mx-auto'
+					className='mx-auto h-auto max-h-40 w-auto object-contain'
 					alt={product.title!}
 				/>
-				<Badge className='absolute top-0 left-0'>{product.category}</Badge>
+				<Badge className='absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate'>{product.category}</Badge>
 			</div>
 
-			<div className='p-2'>
-				<div className='flex justify-between items-center text-sm'>
-					<h1 className='font-bold'>{product.title}</h1>
-					<p className='font-medium'>{formatPrice(product.price!)}</p>
+			<div className='p-3'>
+				<div className='flex items-start justify-between gap-3 text-sm'>
+					<h1 className='line-clamp-2 font-bold'>{product.title}</h1>
+					<p className='shrink-0 font-medium text-primary'>{formatPrice(product.price!)}</p>
 				</div>
-				<p className='text-xs text-muted-foreground'>{product.description}</p>
+				<p className='mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground'>{product.description}</p>
 				<Separator className='my-2' />
 			</div>
 

@@ -18,8 +18,8 @@ function Products({ products, totalProducts }: Props) {
 	const searchParams = useSearchParams()
 
 	return (
-		<section id='products' className='container mx-auto max-w-7xl px-4 py-8 md:py-12'>
-			<div className='premium-shell p-6 md:p-8'>
+		<section id='products' className='container mx-auto max-w-7xl px-3 py-6 sm:px-4 md:py-10'>
+			<div className='premium-shell p-4 sm:p-6 md:p-8'>
 				<div className='flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between'>
 					<div>
 						<h2 className='section-title'>Featured products</h2>
@@ -30,10 +30,10 @@ function Products({ products, totalProducts }: Props) {
 					<CategoryBar />
 				</div>
 
-				<Separator className='my-6 opacity-60' />
+				<Separator className='my-5 opacity-60 sm:my-6' />
 
 				{products.length === 0 && <NoProductsFound />}
-				<div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+				<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-5'>
 					<AnimatePresence>
 						{products.map(product => (
 							<ProductCard key={product._id} product={product} />

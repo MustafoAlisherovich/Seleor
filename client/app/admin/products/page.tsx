@@ -22,7 +22,7 @@ const Page = async (props: Props) => {
 	const isNext = res.data.isNext || false
 	return (
 		<>
-			<div className='flex justify-between items-center w-full'>
+			<div className='flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
 				<h1 className='text-xl font-bold'>Products</h1>
 				<AddProduct />
 			</div>
@@ -31,7 +31,7 @@ const Page = async (props: Props) => {
 
 			<Filter showSearch showCategory />
 
-			<div className='grid grid-cols-2 md:grid-cols-4 gap-4 mt-3'>
+			<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
 				{products && products.length === 0 && (
 					<p className='text-muted-foreground'>No products found</p>
 				)}

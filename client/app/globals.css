@@ -46,7 +46,7 @@
 }
 
 :root {
-	--radius: 1.15rem;
+	--radius: 0.5rem;
 	--background: oklch(0.985 0.004 264);
 	--foreground: oklch(0.22 0.02 265);
 	--card: oklch(0.995 0.002 264);
@@ -123,7 +123,7 @@
 		scroll-behavior: smooth;
 	}
 
-	body {
+body {
 		@apply bg-background text-foreground antialiased;
 		background-image:
 			radial-gradient(circle at top, rgba(59, 130, 246, 0.12), transparent 30%),
@@ -141,16 +141,24 @@
 	}
 }
 
+.container {
+	@apply w-full;
+}
+
+.tracking-tight {
+	letter-spacing: 0;
+}
+
 .no-focus {
 	@apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0;
 }
 
 .premium-shell {
-	@apply rounded-[28px] border border-white/50 bg-white/70 shadow-[0_20px_80px_-40px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5;
+	@apply rounded-lg border border-white/50 bg-white/75 shadow-[0_18px_60px_-38px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5;
 }
 
 .section-title {
-	@apply text-3xl font-bold tracking-tight md:text-4xl;
+	@apply text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl;
 }
 
 .section-subtitle {

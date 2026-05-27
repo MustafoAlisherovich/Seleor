@@ -11,9 +11,9 @@ interface Props {
 export default function NoProductsFound({ showBtn }: Props) {
 	return (
 		<div className='flex flex-col items-center justify-center py-10'>
-			<div className='premium-shell w-full max-w-xl rounded-[32px] p-4'>
-				<div className='flex flex-col items-center justify-center space-y-6 p-8 text-center'>
-					<div className='flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary'>
+			<div className='premium-shell w-full max-w-xl p-4'>
+				<div className='flex flex-col items-center justify-center space-y-6 p-4 text-center sm:p-8'>
+					<div className='flex size-16 items-center justify-center rounded-lg bg-primary/10 text-primary'>
 						<Search className='size-7' />
 					</div>
 					<div>

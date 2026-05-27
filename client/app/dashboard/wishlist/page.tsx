@@ -30,10 +30,10 @@ const Page = async (props: Props) => {
 			<Separator className='my-3' />
 
 			{products && products.length === 0 && (
-				<div className='text-center mt-3 '>No products found.</div>
+				<div className='mt-3 text-center text-sm text-muted-foreground'>No products found.</div>
 			)}
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-3'>
+			<div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
 				{products &&
 					products.map(product => (
 						<WishlistCard key={product._id} product={product} />

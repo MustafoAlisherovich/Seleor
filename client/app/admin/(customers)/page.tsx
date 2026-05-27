@@ -32,14 +32,15 @@ const Page = async (props: Props) => {
 
 	return (
 		<>
-			<div className='flex justify-between items-center w-full'>
+			<div className='flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
 				<h1 className='text-xl font-bold'>Customers</h1>
 				<Filter showSearch />
 			</div>
 
 			<Separator className='my-3' />
 
-			<Table>
+			<div className='overflow-x-auto'>
+			<Table className='min-w-[760px]'>
 				{customers && customers.length > 0 && (
 					<TableCaption>A list of your recent custoemrs.</TableCaption>
 				)}
@@ -87,6 +88,7 @@ const Page = async (props: Props) => {
 						))}
 				</TableBody>
 			</Table>
+			</div>
 
 			<Pagination
 				isNext={isNext}
